@@ -3,6 +3,7 @@ package com.mymeetings.android.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.concurrent.TimeUnit
 
 @Entity(tableName = "meetings")
 data class MeetingsDBModel(
@@ -14,8 +15,11 @@ data class MeetingsDBModel(
     @ColumnInfo(name = "title")
     var title: String,
 
-    @ColumnInfo(name = "time")
-    var time : Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "start_time")
+    var startTime : Long = System.currentTimeMillis(),
+
+    @ColumnInfo(name = "end_time")
+    var endTime : Long = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10),
 
     @ColumnInfo(name = "is_done")
     var isDone : Boolean = false

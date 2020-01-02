@@ -2,7 +2,10 @@ package com.mymeetings.android.di
 
 import android.content.Context
 import com.mymeetings.android.db.MeetingsDao
+import com.mymeetings.android.db.MeetingsDataRepository
 import com.mymeetings.android.db.MyMeetingsDatabase
+import com.mymeetings.android.db.RoomMeetingDataRepository
+import com.mymeetings.android.model.GoogleCalendarSync
 import com.mymeetings.android.model.MeetingsMaintainer
 import org.koin.dsl.module.module
 
@@ -19,7 +22,12 @@ class DIProvider(private val context: Context) {
 
         single {
             val meetingsDao = get<MeetingsDao>()
-            MeetingsMaintainer(meetingsDao)
+            RoomMeetingDataRepository(meetingsDao)
+        }
+
+        single {
+            val meetingDataRepository = get<MeetingsDataRepository>()
+            MeetingsMaintainer(meetingDataRepository, listOf(GoogleCalendarSync()))
         }
     }
 }
