@@ -5,9 +5,9 @@ class Meeting(
     var meetingTitle : String,
     var startTime : Long,
     var endTime : Long,
-    var isDone : Boolean = false) {
+    var isDeleted : Boolean = false) {
 
-    fun markAsDone() {
-        isDone = true
+    fun delete() {
+        isDeleted = true
     }
 }

@@ -8,6 +8,8 @@ interface MeetingsDataRepository {
 
     suspend fun addMeeting(meeting: Meeting)
 
+    suspend fun addMeetings(meetings : List<Meeting>)
+
     suspend fun updateMeeting(meeting: Meeting)
 }
 
@@ -20,7 +22,7 @@ class RoomMeetingDataRepository(private val meetingsDao: MeetingsDao) : Meetings
                 meetingTitle = it.title,
                 startTime = it.startTime,
                 endTime = it.endTime,
-                isDone = it.isDone
+                isDeleted = it.isDone
             )
         }
     }
@@ -31,9 +33,20 @@ class RoomMeetingDataRepository(private val meetingsDao: MeetingsDao) : Meetings
                 title = meeting.meetingTitle,
                 startTime = meeting.startTime,
                 endTime = meeting.endTime,
-                isDone = meeting.isDone
+                isDone = meeting.isDeleted
             )
         )
+    }
+
+    override suspend fun addMeetings(meetings: List<Meeting>) {
+        meetingsDao.addMeetings(* meetings.map { meeting ->
+            MeetingsDBModel(
+                title = meeting.meetingTitle,
+                startTime = meeting.startTime,
+                endTime = meeting.endTime,
+                isDone = meeting.isDeleted
+            )
+        }.toTypedArray())
     }
 
     override suspend fun updateMeeting(meeting: Meeting) {
@@ -42,7 +55,7 @@ class RoomMeetingDataRepository(private val meetingsDao: MeetingsDao) : Meetings
             title = meeting.meetingTitle,
             startTime = meeting.startTime,
             endTime = meeting.endTime,
-            isDone = meeting.isDone
+            isDone = meeting.isDeleted
             ))
     }
 }
@@ -59,12 +72,16 @@ class PlainMeetingDataRepository() : MeetingsDataRepository {
         meetings.add(meeting)
     }
 
+    override suspend fun addMeetings(meetings: List<Meeting>) {
+        this.meetings.addAll(meetings)
+    }
+
     override suspend fun updateMeeting(meeting: Meeting) {
         val meetingToUpdate = meetings.first {
             it.meetingId == meeting.meetingId
         }
         meetingToUpdate.meetingTitle = meeting.meetingTitle
-        meetingToUpdate.isDone = meeting.isDone
+        meetingToUpdate.isDeleted = meeting.isDeleted
         meetingToUpdate.startTime = meeting.startTime
         meetingToUpdate.endTime = meeting.endTime
     }

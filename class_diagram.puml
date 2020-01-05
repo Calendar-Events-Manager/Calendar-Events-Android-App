@@ -1,0 +1,34 @@
+@startuml
+
+class Meeting {
+    - String title
+    - long startTime
+    - long endTime
+    - int priority
+    - List<Reminder> reminders
+    - String syncId
+}
+
+class Reminder {
+    - long remindTime
+    - int alertType
+}
+
+Meeting *-- Reminder
+
+class MeetingViewer {
+    - ViewProfile viewProfile
+    - List<Reminder> reminders
+}
+
+class AlertRule {
+    + int getAlertLevel(long meetingStartTime, int meetingAlertType)
+}
+
+class MeetingsMaintainer {
+    + List<Meeting> getUpcomingMeetings()
+    + void addMeeting()
+    + void syncMeetings()
+}
+
+@enduml

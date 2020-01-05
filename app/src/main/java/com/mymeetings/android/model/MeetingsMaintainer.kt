@@ -11,10 +11,6 @@ class MeetingsMaintainer(private val meetingsDataRepository: MeetingsDataReposit
         meetingsDataRepository.addMeeting(meeting)
     }
 
-    suspend fun updateMeeting(meeting: Meeting) {
-        meetingsDataRepository.updateMeeting(meeting)
-    }
-
     suspend fun getUpcomingMeetings(): LiveData<List<Meeting>> {
         val latency = TimeUnit.MINUTES.toMillis(5)
         val meetings = meetingsDataRepository.getUpComingMeetings(System.currentTimeMillis() - latency)
@@ -23,6 +19,8 @@ class MeetingsMaintainer(private val meetingsDataRepository: MeetingsDataReposit
     }
 
     suspend fun syncCloudCalendar() {
-
+        cloudCalendarSyncs.forEach {
+            val meetings = it.getMeetingsFromCloud()
+        }
     }
 }

@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import com.mymeetings.android.R
-import com.mymeetings.android.view.activities.MeetingListActivity
+import com.mymeetings.android.view.activities.MainActivity
 
 class MeetingAppWidgetProvider : AppWidgetProvider() {
 
@@ -20,7 +20,7 @@ class MeetingAppWidgetProvider : AppWidgetProvider() {
 
         context?.let { ctx ->
             appWidgetIds?.forEach { id ->
-                val pendingIntent: PendingIntent = Intent(context, MeetingListActivity::class.java)
+                val pendingIntent: PendingIntent = Intent(context, MainActivity::class.java)
                     .let { intent ->
                         PendingIntent.getActivity(context, 0, intent, 0)
                     }

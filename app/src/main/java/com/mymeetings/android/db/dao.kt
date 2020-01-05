@@ -13,4 +13,7 @@ interface MeetingsDao {
 
     @Update
     fun updateMeeting(meetingsDBModel: MeetingsDBModel) : Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addMeetings(vararg meetingDBModel : MeetingsDBModel) : LongArray
 }
