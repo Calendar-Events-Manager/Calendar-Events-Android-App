@@ -6,9 +6,7 @@ import java.util.concurrent.TimeUnit
 class MeetingsMaintainer(private val meetingsDataRepository: MeetingsDataRepository, private val cloudCalendarSyncs : List<CloudCalendarSync>) {
 
     suspend fun getUpcomingMeetings(): List<Meeting>{
-        val latency = TimeUnit.MINUTES.toMillis(5)
-
-        return meetingsDataRepository.getUpComingMeetings(System.currentTimeMillis() - latency)
+        return meetingsDataRepository.getUpcomingMeetings()
     }
 
     suspend fun syncCloudCalendar() {

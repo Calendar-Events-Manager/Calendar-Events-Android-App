@@ -3,11 +3,14 @@ package com.mymeetings.android.view.activities
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mymeetings.android.R
+import com.mymeetings.android.view.activities.ui.home.MeetingsViewModel
+import org.koin.android.viewmodel.ext.android.getViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,5 +29,12 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val meetingViewModel : MeetingsViewModel = getViewModel()
+        meetingViewModel.syncEvents()
     }
 }

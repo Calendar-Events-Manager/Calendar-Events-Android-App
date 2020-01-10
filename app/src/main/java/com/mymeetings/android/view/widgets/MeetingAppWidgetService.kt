@@ -18,6 +18,7 @@ import com.mymeetings.android.model.Meeting
 import com.mymeetings.android.view.activities.ui.home.MeetingsViewModel
 import kotlinx.android.synthetic.main.widget_meetings.view.*
 import org.koin.android.ext.android.get
+import org.koin.android.viewmodel.ext.android.getViewModel
 
 
 class MeetingAppWidgetService : RemoteViewsService() {

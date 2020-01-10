@@ -5,8 +5,8 @@ import androidx.room.*
 @Dao
 interface MeetingsDao {
 
-    @Query("SELECT * FROM meetings where end_time > :startTime ORDER BY start_time ASC LIMIT 100")
-    fun getUpComingMeetings(startTime : Long): List<MeetingsDBModel>
+    @Query("SELECT * FROM meetings where end_time > :givenTime ORDER BY start_time ASC LIMIT 100")
+    fun getMeetingsBy(givenTime : Long): List<MeetingsDBModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addMeeting(meetingsDBModel: MeetingsDBModel): Long

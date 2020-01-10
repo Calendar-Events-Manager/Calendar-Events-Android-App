@@ -1,13 +1,13 @@
 package com.mymeetings.android.di
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.mymeetings.android.db.MeetingsDao
 import com.mymeetings.android.db.MyMeetingsDatabase
 import com.mymeetings.android.db.RoomMeetingDataRepository
-import com.mymeetings.android.model.GoogleCalendarSync
-import com.mymeetings.android.model.LocalCalendarSync
-import com.mymeetings.android.model.MeetingView
-import com.mymeetings.android.model.MeetingsMaintainer
+import com.mymeetings.android.model.*
+import com.mymeetings.android.utils.ClockUtils
 import com.mymeetings.android.view.activities.ui.home.MeetingsViewModel
 import com.mymeetings.android.view.widgets.MeetingWidgetRemoteViewFactory
 import org.koin.android.viewmodel.ext.koin.viewModel
@@ -26,8 +26,12 @@ class DIProvider(private val context: Context) {
 
         single {
             val meetingsDao = get<MeetingsDao>()
-            RoomMeetingDataRepository(meetingsDao)
+            RoomMeetingDataRepository(meetingsDao, get())
         }
+
+        single { ClockUtils() }
+
+        single(name = "meetingsLiveData") { MutableLiveData<List<Meeting>>() }
 
         single {
             val meetingDataRepository = get<RoomMeetingDataRepository>()
@@ -36,11 +40,10 @@ class DIProvider(private val context: Context) {
 
         viewModel {
             val meetingsMaintainer = get<MeetingsMaintainer>()
-            MeetingsViewModel(meetingsMaintainer)
+            MeetingsViewModel(meetingsMaintainer, get())
         }
 
         factory {
-            val meetingDataRepository = get<RoomMeetingDataRepository>()
             val meetingsViewModel = get<MeetingsViewModel>()
             MeetingWidgetRemoteViewFactory(context, meetingsViewModel)
         }

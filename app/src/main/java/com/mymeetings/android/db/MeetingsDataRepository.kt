@@ -1,10 +1,13 @@
 package com.mymeetings.android.db
 
 import com.mymeetings.android.model.Meeting
+import com.mymeetings.android.utils.ClockUtils
+import java.time.Clock
+import java.time.ZoneId
 
 interface MeetingsDataRepository {
 
-    suspend fun getUpComingMeetings(startTime: Long): List<Meeting>
+    suspend fun getUpcomingMeetings(): List<Meeting>
 
     suspend fun addMeeting(meeting: Meeting)
 
@@ -15,10 +18,13 @@ interface MeetingsDataRepository {
     suspend fun clearMeetingsData()
 }
 
-class RoomMeetingDataRepository(private val meetingsDao: MeetingsDao) : MeetingsDataRepository {
+class RoomMeetingDataRepository(
+    private val meetingsDao: MeetingsDao,
+    private val clockUtils: ClockUtils) : MeetingsDataRepository {
 
-    override suspend fun getUpComingMeetings(startTime: Long): List<Meeting> {
-        return meetingsDao.getUpComingMeetings(startTime).map {
+    override suspend fun getUpcomingMeetings(): List<Meeting> {
+        val currentTime = clockUtils.currentTimeMillis()
+        return meetingsDao.getMeetingsBy(currentTime).map {
             Meeting(
                 meetingId = it.id,
                 meetingTitle = it.title,
@@ -70,7 +76,7 @@ class PlainMeetingDataRepository() : MeetingsDataRepository {
 
     private val meetings = mutableListOf<Meeting>()
 
-    override suspend fun getUpComingMeetings(startTime: Long): List<Meeting> {
+    override suspend fun getUpcomingMeetings(): List<Meeting> {
         return meetings
     }
 
