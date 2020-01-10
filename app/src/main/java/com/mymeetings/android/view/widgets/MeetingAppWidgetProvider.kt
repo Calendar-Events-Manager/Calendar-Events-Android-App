@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.widget.RemoteViews
 import com.mymeetings.android.R
 import com.mymeetings.android.view.activities.MainActivity
@@ -25,13 +26,19 @@ class MeetingAppWidgetProvider : AppWidgetProvider() {
                         PendingIntent.getActivity(context, 0, intent, 0)
                     }
 
+                val intent : Intent = Intent(context, MeetingAppWidgetService::class.java).apply {
+                    putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
+                    data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+                }
+
                 // Get the layout for the App Widget and attach an on-click listener
                 // to the button
                 val views: RemoteViews = RemoteViews(
                     ctx.packageName,
                     R.layout.widget_meetings
                 ).apply {
-                    setOnClickPendingIntent(R.id.textView, pendingIntent)
+                    setRemoteAdapter(R.id.listView, intent)
+                    setEmptyView(R.id.listView, R.id.emptyTextView)
                 }
 
                 // Tell the AppWidgetManager to perform an update on the current app widget

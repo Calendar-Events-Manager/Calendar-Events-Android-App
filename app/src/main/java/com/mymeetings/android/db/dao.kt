@@ -16,4 +16,7 @@ interface MeetingsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addMeetings(vararg meetingDBModel : MeetingsDBModel) : LongArray
+
+    @Query("DELETE FROM meetings")
+    fun purgeMeetings()
 }

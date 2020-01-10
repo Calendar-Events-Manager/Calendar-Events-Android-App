@@ -11,6 +11,8 @@ interface MeetingsDataRepository {
     suspend fun addMeetings(meetings : List<Meeting>)
 
     suspend fun updateMeeting(meeting: Meeting)
+
+    suspend fun clearMeetingsData()
 }
 
 class RoomMeetingDataRepository(private val meetingsDao: MeetingsDao) : MeetingsDataRepository {
@@ -58,6 +60,10 @@ class RoomMeetingDataRepository(private val meetingsDao: MeetingsDao) : Meetings
             isDone = meeting.isDeleted
             ))
     }
+
+    override suspend fun clearMeetingsData() {
+        meetingsDao.purgeMeetings()
+    }
 }
 
 class PlainMeetingDataRepository() : MeetingsDataRepository {
@@ -86,4 +92,7 @@ class PlainMeetingDataRepository() : MeetingsDataRepository {
         meetingToUpdate.endTime = meeting.endTime
     }
 
+    override suspend fun clearMeetingsData() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

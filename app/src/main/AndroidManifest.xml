@@ -30,6 +30,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/meeting_appwidget_info" />
         </receiver>
+        <service android:name=".view.widgets.MeetingAppWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

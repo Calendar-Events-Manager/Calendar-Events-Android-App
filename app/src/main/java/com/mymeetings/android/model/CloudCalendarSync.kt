@@ -78,13 +78,22 @@ class LocalCalendarSync(private val context: Context) : CloudCalendarSync {
                     null
                 )
 
+            val meetings = mutableListOf<Meeting>()
             while (eventCur?.moveToNext() == true) {
                 val title = eventCur.getString(1)
-                println(title)
-                Log.v("XDFCE", title)
+                val startTime = eventCur.getLong(2)
+                val endTime = eventCur.getLong(3)
+
+                meetings.add(Meeting(
+                    meetingTitle = title,
+                    startTime = startTime,
+                    endTime = endTime
+                ))
             }
 
             eventCur?.close()
+
+            return meetings
         }
 
         return emptyList()
