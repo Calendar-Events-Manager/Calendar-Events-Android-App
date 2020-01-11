@@ -4,13 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import com.mymeetings.android.db.repositories.CalendarEventsRepository
 import com.mymeetings.android.model.calendarFetchStrategies.CalendarFetchStrategy
 import com.mymeetings.android.model.calendarFetchStrategies.CalendarFetchStrategyType
+import com.mymeetings.android.utils.ClockUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class CalendarEventsSyncManager(
     private val calendarEventsRepository: CalendarEventsRepository,
-    private val calendarFetchStrategies: List<CalendarFetchStrategy>
+    private val calendarFetchStrategies: List<CalendarFetchStrategy>,
+    private val clockUtils: ClockUtils
 ) {
 
     val calendarEventsLiveData = MutableLiveData<List<CalendarEvent>>()
@@ -23,13 +26,15 @@ class CalendarEventsSyncManager(
     }
 
     fun fetchCalendarEvents(calendarFetchStrategyType: CalendarFetchStrategyType? = null) {
+        val fetchUpTo = clockUtils.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)
+        val fetchFrom = clockUtils.currentTimeMillis()
         CoroutineScope(Dispatchers.IO).launch {
             calendarEventsRepository.clearCalendarEvents()
             calendarFetchStrategies.forEach {
                 if (calendarFetchStrategyType == null
                     || calendarFetchStrategyType == it.getCalendarFetchStrategyType()
                 ) {
-                    calendarEventsRepository.addCalendarEvents(it.fetchCalendarEvents())
+                    calendarEventsRepository.addCalendarEvents(it.fetchCalendarEvents(fetchFrom, fetchUpTo))
                     getUpcomingCalendarEvents()
                 }
             }

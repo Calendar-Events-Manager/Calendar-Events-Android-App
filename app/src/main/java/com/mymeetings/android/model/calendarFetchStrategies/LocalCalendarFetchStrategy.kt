@@ -8,11 +8,12 @@ import android.database.Cursor
 import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
 import com.mymeetings.android.model.CalendarEvent
+import com.mymeetings.android.utils.ClockUtils
 
 class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchStrategy {
 
     @SuppressLint("MissingPermission")
-    override suspend fun fetchCalendarEvents(): List<CalendarEvent> {
+    override suspend fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long): List<CalendarEvent> {
 
         if(isAuthorized()) {
             val calCur: Cursor? =
@@ -25,9 +26,7 @@ class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchSt
                 )
 
             val calIds = mutableListOf<Long>()
-            // Use the cursor to step through the returned records
             while (calCur?.moveToNext() == true) {
-                // Get the field values
                 val calID: Long = calCur.getLong(0)
                 calIds.add(calID)
             }
@@ -44,9 +43,9 @@ class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchSt
                         CalendarContract.Events.DTSTART,
                         CalendarContract.Events.DTEND
                     ),
-                    null,
-                    null,
-                    null
+                    "${CalendarContract.Events.DTEND} >= ? AND ${CalendarContract.Events.DTSTART} <= ?",
+                    arrayOf(fetchFrom.toString(), fetchUpTo.toString()),
+                    "${CalendarContract.Events.DTSTART} ASC"
                 )
 
             val meetings = mutableListOf<CalendarEvent>()

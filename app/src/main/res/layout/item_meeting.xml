@@ -1,16 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="@android:color/holo_blue_light">
 
     <TextView
-        android:id="@+id/titleText"
+        android:id="@+id/runningTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="Catchup with Sherpa"/>
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        tools:visibility="gone"
+        tools:text="Catchup with Sherpa"/>
 
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/upcomingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/timeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            tools:text="In 30 Mins"/>
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:text="Catchup with Sherpa"/>
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -19,38 +19,31 @@ class DIProvider(private val context: Context) {
 
         single { CalendarEventsReminderDatabase.getDb(context) }
 
-        single {
-            val myMeetingsDatabase = get<CalendarEventsReminderDatabase>()
-            myMeetingsDatabase.getMeetingsDao()
-        }
+        single { get<CalendarEventsReminderDatabase>().getMeetingsDao() }
+
+        single { RoomCalendarEventsDataRepository(get(), get()) }
+
+        single { ClockUtils() }
+
+        single { CalendarEventAlertManager(get()) }
+
+        single { GoogleCalendarFetchStrategy() }
+
+        single { LocalCalendarFetchStrategy(context) }
 
         single {
-            val meetingsDao = get<CalendarEventsDao>()
-            RoomCalendarEventsDataRepository(
-                meetingsDao,
+            CalendarEventsSyncManager(
+                get<RoomCalendarEventsDataRepository>(),
+                listOf(
+                    get<LocalCalendarFetchStrategy>(),
+                    get<GoogleCalendarFetchStrategy>()
+                ),
                 get()
             )
         }
 
-        single { ClockUtils() }
+        viewModel { CalendarEventsViewModel(get()) }
 
-        single {
-            val meetingDataRepository = get<RoomCalendarEventsDataRepository>()
-            CalendarEventsSyncManager(meetingDataRepository, listOf(GoogleCalendarFetchStrategy(),
-                LocalCalendarFetchStrategy(
-                    context
-                )
-            ))
-        }
-
-        viewModel {
-            val meetingsMaintainer = get<CalendarEventsSyncManager>()
-            CalendarEventsViewModel(meetingsMaintainer)
-        }
-
-        factory {
-            val meetingsViewModel = get<CalendarEventsViewModel>()
-            CalendarEventWidgetRemoteViewFactory(context, meetingsViewModel)
-        }
+        factory { CalendarEventWidgetRemoteViewFactory(context, get(), get(), get()) }
     }
 }

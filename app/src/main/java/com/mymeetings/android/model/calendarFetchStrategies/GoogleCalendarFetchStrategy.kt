@@ -4,7 +4,7 @@ import com.mymeetings.android.model.CalendarEvent
 
 class GoogleCalendarFetchStrategy : CalendarFetchStrategy {
 
-    override suspend fun fetchCalendarEvents(): List<CalendarEvent> {
+    override suspend fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long): List<CalendarEvent> {
         if(isAuthorized()) {
 
         }

@@ -1,6 +1,15 @@
 @startuml
 
-class Meeting {
+package "CalendarEvent" {
+
+class CalendarEventManager {
+    + val calendarEvents : LiveData<List<CalendarEvent>>
+    - val calendarEventFetchers : List<CalendarEventFetcher>
+    + fun addMeeting()
+    + fun syncMeetings()
+}
+
+class CalendarEvent {
     - String title
     - long startTime
     - long endTime
@@ -9,26 +18,24 @@ class Meeting {
     - String syncId
 }
 
-class Reminder {
-    - long remindTime
-    - int alertType
+interface CalendarEventFetcher {
+    fun fetchCalendarEvents() : List<CalendarEvent>
 }
 
-Meeting *-- Reminder
+CalendarEventManager "1" o-- "*" CalendarEvent : Has
+CalendarEventManager "1" o-- "*" CalendarEventFetcher : Has
+CalendarEventFetcher "*" o-- "*" CalendarEvent : Fetches
 
-class MeetingViewer {
-    - ViewProfile viewProfile
-    - List<Reminder> reminders
 }
 
-class AlertRule {
-    + int getAlertLevel(long meetingStartTime, int meetingAlertType)
+package "CalendarEventAlert" {
+
+class CalendarEventAlertManager {
+    private val priorityAlertTime : Long
+    private val normalAlertTime : Long
+    fun getCalendarEventWithAlertType(calendarEvents : List<CalendarEvent>) : Map<CalendarEvent : AlertType>
 }
 
-class MeetingsMaintainer {
-    + List<Meeting> getUpcomingMeetings()
-    + void addMeeting()
-    + void syncMeetings()
 }
 
 @enduml
