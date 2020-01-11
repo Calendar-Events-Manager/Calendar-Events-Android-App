@@ -4,7 +4,7 @@ import android.app.Application
 import com.mymeetings.android.di.DIProvider
 import org.koin.android.ext.android.startKoin
 
-class MeetingApp : Application() {
+class CalendarEventApp : Application() {
 
     override fun onCreate() {
         super.onCreate()

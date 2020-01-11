@@ -10,7 +10,7 @@ import android.widget.RemoteViews
 import com.mymeetings.android.R
 import com.mymeetings.android.view.activities.MainActivity
 
-class MeetingAppWidgetProvider : AppWidgetProvider() {
+class CalendarEventsWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context?,
@@ -26,7 +26,7 @@ class MeetingAppWidgetProvider : AppWidgetProvider() {
                         PendingIntent.getActivity(context, 0, intent, 0)
                     }
 
-                val intent : Intent = Intent(context, MeetingAppWidgetService::class.java).apply {
+                val intent : Intent = Intent(context, CalendarEventWidgetService::class.java).apply {
                     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
                     data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
                 }

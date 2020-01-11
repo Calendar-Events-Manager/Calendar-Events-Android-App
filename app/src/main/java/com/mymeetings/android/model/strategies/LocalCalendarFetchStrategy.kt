@@ -1,4 +1,4 @@
-package com.mymeetings.android.model
+package com.mymeetings.android.model.strategies
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,12 +7,12 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
+import com.mymeetings.android.model.CalendarEvent
 
-class LocalCalendarFetchStrategy(private val context: Context) :
-    CalendarFetchStrategy {
+class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchStrategy {
 
     @SuppressLint("MissingPermission")
-    override suspend fun fetchCalendarEvents(): List<CalendarEvent> {
+    override suspend fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long): List<CalendarEvent> {
 
         if(isAuthorized()) {
             val calCur: Cursor? =
@@ -25,9 +25,7 @@ class LocalCalendarFetchStrategy(private val context: Context) :
                 )
 
             val calIds = mutableListOf<Long>()
-            // Use the cursor to step through the returned records
             while (calCur?.moveToNext() == true) {
-                // Get the field values
                 val calID: Long = calCur.getLong(0)
                 calIds.add(calID)
             }
@@ -44,9 +42,9 @@ class LocalCalendarFetchStrategy(private val context: Context) :
                         CalendarContract.Events.DTSTART,
                         CalendarContract.Events.DTEND
                     ),
-                    null,
-                    null,
-                    null
+                    "${CalendarContract.Events.DTEND} >= ? AND ${CalendarContract.Events.DTSTART} <= ?",
+                    arrayOf(fetchFrom.toString(), fetchUpTo.toString()),
+                    "${CalendarContract.Events.DTSTART} ASC"
                 )
 
             val meetings = mutableListOf<CalendarEvent>()
@@ -84,5 +82,7 @@ class LocalCalendarFetchStrategy(private val context: Context) :
             status(true)
         }
     }
+
+    override fun getCalendarFetchStrategyType() = CalendarFetchStrategyType.LOCAL_CALENDAR
 
 }

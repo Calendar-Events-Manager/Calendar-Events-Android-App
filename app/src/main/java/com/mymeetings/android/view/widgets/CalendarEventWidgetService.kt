@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Handler
+import android.view.View
 import android.widget.AdapterView
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -14,24 +15,29 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import com.mymeetings.android.R
-import com.mymeetings.android.model.CalendarEvent
-import com.mymeetings.android.view.activities.ui.home.MeetingsViewModel
+import com.mymeetings.android.model.ViewAlertType
+import com.mymeetings.android.model.managers.CalendarEventAlertManager
+import com.mymeetings.android.model.CalendarEventWithViewAlert
+import com.mymeetings.android.utils.ClockUtils
+import com.mymeetings.android.view.activities.ui.home.CalendarEventsViewModel
 import org.koin.android.ext.android.get
 
 
-class MeetingAppWidgetService : RemoteViewsService() {
+class CalendarEventWidgetService : RemoteViewsService() {
 
     override fun onGetViewFactory(intent: Intent?): RemoteViewsFactory {
-        return get<MeetingWidgetRemoteViewFactory>()
+        return get<CalendarEventWidgetRemoteViewFactory>()
     }
 }
 
-class MeetingWidgetRemoteViewFactory(
+class CalendarEventWidgetRemoteViewFactory(
     private val context: Context,
-    private val meetingsViewModel: MeetingsViewModel
+    private val calendarEventsViewModel: CalendarEventsViewModel,
+    private val calendarEventAlertManager: CalendarEventAlertManager,
+    private val clockUtils: ClockUtils
 ) : RemoteViewsService.RemoteViewsFactory, LifecycleOwner {
 
-    private var calendarEvents : List<CalendarEvent>? = null
+    private var calendarEventsWithViewAlertType : List<CalendarEventWithViewAlert>? = null
 
     private val lifecycleDispatcher: WidgetServiceLifecycleDispatcher =
         WidgetServiceLifecycleDispatcher(this)
@@ -39,16 +45,15 @@ class MeetingWidgetRemoteViewFactory(
 
     override fun onCreate() {
         lifecycleDispatcher.onConstructor()
-        meetingsViewModel.meetingsLiveData.observe(this, Observer {
-            calendarEvents = it
+        calendarEventsViewModel.getCalendarEventLiveData().observe(this, Observer {
+            calendarEventsWithViewAlertType = calendarEventAlertManager.getCalendarEventAlerts(it)
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                ComponentName(context, MeetingAppWidgetProvider::class.java)
+                ComponentName(context, CalendarEventsWidgetProvider::class.java)
             )
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
-            //TODO refresh this adapter.
         })
-        meetingsViewModel.syncEvents()
+        calendarEventsViewModel.syncEvents()
     }
 
     override fun getLoadingView(): RemoteViews {
@@ -56,7 +61,7 @@ class MeetingWidgetRemoteViewFactory(
     }
 
     override fun getItemId(position: Int): Long {
-        return calendarEvents?.get(position)?.id?:position.toLong()
+        return calendarEventsWithViewAlertType?.get(position)?.calendarEvent?.id?:position.toLong()
     }
 
     override fun onDataSetChanged() {
@@ -69,10 +74,30 @@ class MeetingWidgetRemoteViewFactory(
     }
 
     override fun getViewAt(position: Int): RemoteViews {
-        if(position != AdapterView.INVALID_POSITION) {
-            val meeting = calendarEvents?.get(position)
+        if(position != AdapterView.INVALID_POSITION && calendarEventsWithViewAlertType?.size?:0 > position) {
+            val calendarEventWithAlertPair = calendarEventsWithViewAlertType?.get(position)
             return RemoteViews(context.packageName, R.layout.item_meeting).apply {
-                setTextViewText(R.id.titleText, meeting?.title?:"")
+                calendarEventWithAlertPair?.let {
+                    if(it.viewAlertType == ViewAlertType.RUNNING) {
+                        setTextViewText(R.id.runningTitleText, it.calendarEvent.title)
+                        setViewVisibility(R.id.upcomingLayout, View.GONE)
+                        setViewVisibility(R.id.runningTitleText, View.VISIBLE)
+                    } else {
+                        setTextViewText(R.id.titleText, it.calendarEvent.title)
+                        setTextViewText(R.id.timeText, clockUtils.getTimeLeft(it.calendarEvent.startTime))
+                        setViewVisibility(R.id.upcomingLayout, View.VISIBLE)
+                        setViewVisibility(R.id.runningTitleText, View.GONE)
+
+                        if(it.viewAlertType == ViewAlertType.PRIORITY) {
+                            setTextColor(R.id.titleText, context.getColor(android.R.color.holo_red_dark))
+                        } else if(it.viewAlertType == ViewAlertType.NORMAL) {
+                            setTextColor(R.id.titleText, context.getColor(android.R.color.holo_orange_dark))
+                        } else {
+                            setTextColor(R.id.titleText, context.getColor(android.R.color.white))
+                        }
+                    }
+                }
+
             }
         }
 
@@ -80,7 +105,7 @@ class MeetingWidgetRemoteViewFactory(
     }
 
     override fun getCount(): Int {
-        return calendarEvents?.size?:0
+        return calendarEventsWithViewAlertType?.size?:0
     }
 
     override fun getViewTypeCount(): Int {

@@ -1,5 +1,6 @@
 package com.mymeetings.android.db
 
+import com.mymeetings.android.db.repositories.RoomCalendarEventsDataRepository
 import com.mymeetings.android.utils.ClockUtils
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -22,7 +23,11 @@ class RoomCalendarEventDataRepositoryTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        calendarEventsDataRepository = RoomCalendarEventsDataRepository(calendarEventsDao, clockUtils)
+        calendarEventsDataRepository =
+            RoomCalendarEventsDataRepository(
+                calendarEventsDao,
+                clockUtils
+            )
 
     }
 
@@ -34,9 +39,9 @@ class RoomCalendarEventDataRepositoryTest {
         } returns currentTimeMillis
 
         runBlocking {
-            calendarEventsDataRepository.getUpcomingMeetings()
+            calendarEventsDataRepository.getUpcomingCalendarEvents()
         }
 
-        coVerify { calendarEventsDao.getMeetingsBy(currentTimeMillis) }
+        coVerify { calendarEventsDao.getCalendarEventsBy(currentTimeMillis) }
     }
 }

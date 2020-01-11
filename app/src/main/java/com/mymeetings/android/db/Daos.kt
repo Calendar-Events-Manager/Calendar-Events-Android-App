@@ -6,17 +6,17 @@ import androidx.room.*
 interface CalendarEventsDao {
 
     @Query("SELECT * FROM calendar_events where end_time > :givenTime ORDER BY start_time ASC LIMIT 100")
-    fun getMeetingsBy(givenTime : Long): List<CalendarEventsDbModel>
+    fun getCalendarEventsBy(givenTime : Long): List<CalendarEventsDbModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addMeeting(calendarEventsDbModel: CalendarEventsDbModel): Long
+    fun addCalendarEvent(calendarEventsDbModel: CalendarEventsDbModel): Long
 
     @Update
-    fun updateMeeting(calendarEventsDbModel: CalendarEventsDbModel) : Int
+    fun updateCalendarEvent(calendarEventsDbModel: CalendarEventsDbModel) : Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addMeetings(vararg meetingDBModel : CalendarEventsDbModel) : LongArray
+    fun addCalendarEvents(vararg meetingDBModel : CalendarEventsDbModel) : LongArray
 
     @Query("DELETE FROM calendar_events")
-    fun purgeMeetings()
+    fun purgeCalendarEvents()
 }

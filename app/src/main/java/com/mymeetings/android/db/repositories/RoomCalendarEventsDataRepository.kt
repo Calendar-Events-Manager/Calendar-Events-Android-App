@@ -1,5 +1,7 @@
-package com.mymeetings.android.db
+package com.mymeetings.android.db.repositories
 
+import com.mymeetings.android.db.CalendarEventsDao
+import com.mymeetings.android.db.CalendarEventsDbModel
 import com.mymeetings.android.model.CalendarEvent
 import com.mymeetings.android.utils.ClockUtils
 
@@ -8,9 +10,9 @@ class RoomCalendarEventsDataRepository(
     private val clockUtils: ClockUtils
 ) : CalendarEventsRepository {
 
-    override suspend fun getUpcomingMeetings(): List<CalendarEvent> {
+    override suspend fun getUpcomingCalendarEvents(): List<CalendarEvent> {
         val currentTime = clockUtils.currentTimeMillis()
-        return calendarEventsDao.getMeetingsBy(currentTime).map {
+        return calendarEventsDao.getCalendarEventsBy(currentTime).map {
             CalendarEvent(
                 id = it.id,
                 title = it.title,
@@ -21,8 +23,8 @@ class RoomCalendarEventsDataRepository(
         }
     }
 
-    override suspend fun addMeeting(calendarEvent: CalendarEvent) {
-        calendarEventsDao.addMeeting(
+    override suspend fun addCalendarEvent(calendarEvent: CalendarEvent) {
+        calendarEventsDao.addCalendarEvent(
             CalendarEventsDbModel(
                 title = calendarEvent.title,
                 startTime = calendarEvent.startTime,
@@ -32,8 +34,8 @@ class RoomCalendarEventsDataRepository(
         )
     }
 
-    override suspend fun addMeetings(calendarEvents: List<CalendarEvent>) {
-        calendarEventsDao.addMeetings(* calendarEvents.map { meeting ->
+    override suspend fun addCalendarEvents(calendarEvents: List<CalendarEvent>) {
+        calendarEventsDao.addCalendarEvents(* calendarEvents.map { meeting ->
             CalendarEventsDbModel(
                 title = meeting.title,
                 startTime = meeting.startTime,
@@ -43,8 +45,8 @@ class RoomCalendarEventsDataRepository(
         }.toTypedArray())
     }
 
-    override suspend fun updateMeeting(calendarEvent: CalendarEvent) {
-        calendarEventsDao.updateMeeting(
+    override suspend fun updateCalendarEvents(calendarEvent: CalendarEvent) {
+        calendarEventsDao.updateCalendarEvent(
             CalendarEventsDbModel(
                 id = calendarEvent.id,
                 title = calendarEvent.title,
@@ -55,7 +57,7 @@ class RoomCalendarEventsDataRepository(
         )
     }
 
-    override suspend fun clearMeetingsData() {
-        calendarEventsDao.purgeMeetings()
+    override suspend fun clearCalendarEvents() {
+        calendarEventsDao.purgeCalendarEvents()
     }
 }
