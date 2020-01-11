@@ -1,0 +1,21 @@
+package com.mymeetings.android.services
+
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import com.mymeetings.android.debug.ConsoleLog
+import com.mymeetings.android.model.CalendarEventsSyncManager
+import com.mymeetings.android.model.calendarFetchStrategies.CalendarFetchStrategyType
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.get
+
+class LocalCalendarChangeEventReceiver()
+    : BroadcastReceiver(), KoinComponent {
+
+    private val calendarEventsSyncManager: CalendarEventsSyncManager = get()
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        ConsoleLog.i(message = "Receiver received")
+        calendarEventsSyncManager.fetchCalendarEvents(CalendarFetchStrategyType.LOCAL_CALENDAR)
+    }
+}

@@ -15,20 +15,20 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import com.mymeetings.android.R
 import com.mymeetings.android.model.CalendarEvent
-import com.mymeetings.android.view.activities.ui.home.MeetingsViewModel
+import com.mymeetings.android.view.activities.ui.home.CalendarEventsViewModel
 import org.koin.android.ext.android.get
 
 
-class MeetingAppWidgetService : RemoteViewsService() {
+class CalendarEventWidgetService : RemoteViewsService() {
 
     override fun onGetViewFactory(intent: Intent?): RemoteViewsFactory {
-        return get<MeetingWidgetRemoteViewFactory>()
+        return get<CalendarEventWidgetRemoteViewFactory>()
     }
 }
 
-class MeetingWidgetRemoteViewFactory(
+class CalendarEventWidgetRemoteViewFactory(
     private val context: Context,
-    private val meetingsViewModel: MeetingsViewModel
+    private val calendarEventsViewModel: CalendarEventsViewModel
 ) : RemoteViewsService.RemoteViewsFactory, LifecycleOwner {
 
     private var calendarEvents : List<CalendarEvent>? = null
@@ -39,16 +39,15 @@ class MeetingWidgetRemoteViewFactory(
 
     override fun onCreate() {
         lifecycleDispatcher.onConstructor()
-        meetingsViewModel.meetingsLiveData.observe(this, Observer {
+        calendarEventsViewModel.getCalendarEventLiveData().observe(this, Observer {
             calendarEvents = it
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                ComponentName(context, MeetingAppWidgetProvider::class.java)
+                ComponentName(context, CalendarEventsWidgetProvider::class.java)
             )
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
-            //TODO refresh this adapter.
         })
-        meetingsViewModel.syncEvents()
+        calendarEventsViewModel.syncEvents()
     }
 
     override fun getLoadingView(): RemoteViews {
