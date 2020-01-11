@@ -9,12 +9,12 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class RoomMeetingDataRepositoryTest {
+class RoomCalendarEventDataRepositoryTest {
 
-    private lateinit var meetingDataRepository: RoomMeetingDataRepository
+    private lateinit var calendarEventsDataRepository: RoomCalendarEventsDataRepository
 
     @RelaxedMockK
-    private lateinit var meetingsDao: MeetingsDao
+    private lateinit var calendarEventsDao: CalendarEventsDao
 
     @RelaxedMockK
     private lateinit var clockUtils: ClockUtils
@@ -22,7 +22,7 @@ class RoomMeetingDataRepositoryTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        meetingDataRepository = RoomMeetingDataRepository(meetingsDao, clockUtils)
+        calendarEventsDataRepository = RoomCalendarEventsDataRepository(calendarEventsDao, clockUtils)
 
     }
 
@@ -34,9 +34,9 @@ class RoomMeetingDataRepositoryTest {
         } returns currentTimeMillis
 
         runBlocking {
-            meetingDataRepository.getUpcomingMeetings()
+            calendarEventsDataRepository.getUpcomingMeetings()
         }
 
-        coVerify { meetingsDao.getMeetingsBy(currentTimeMillis) }
+        coVerify { calendarEventsDao.getMeetingsBy(currentTimeMillis) }
     }
 }

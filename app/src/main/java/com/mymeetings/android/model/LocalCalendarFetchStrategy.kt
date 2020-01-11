@@ -5,43 +5,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.database.Cursor
-import android.net.Uri
 import android.provider.CalendarContract
-import android.util.Log
 import androidx.core.content.ContextCompat
 
-interface CloudCalendarSync {
-
-    suspend fun getMeetingsFromCloud() : List<Meeting>
-
-    fun isAuthorized() : Boolean
-
-    fun authorize(status : (Boolean) -> Unit)
-}
-
-class GoogleCalendarSync : CloudCalendarSync {
-
-    override suspend fun getMeetingsFromCloud(): List<Meeting> {
-        if(isAuthorized()) {
-
-        }
-
-        return emptyList()
-    }
-
-    override fun isAuthorized(): Boolean {
-        return false
-    }
-
-    override fun authorize(status: (Boolean) -> Unit) {
-        status(false)
-    }
-}
-
-class LocalCalendarSync(private val context: Context) : CloudCalendarSync {
+class LocalCalendarFetchStrategy(private val context: Context) :
+    CalendarFetchStrategy {
 
     @SuppressLint("MissingPermission")
-    override suspend fun getMeetingsFromCloud(): List<Meeting> {
+    override suspend fun fetchCalendarEvents(): List<CalendarEvent> {
 
         if(isAuthorized()) {
             val calCur: Cursor? =
@@ -78,17 +49,19 @@ class LocalCalendarSync(private val context: Context) : CloudCalendarSync {
                     null
                 )
 
-            val meetings = mutableListOf<Meeting>()
+            val meetings = mutableListOf<CalendarEvent>()
             while (eventCur?.moveToNext() == true) {
                 val title = eventCur.getString(1)
                 val startTime = eventCur.getLong(2)
                 val endTime = eventCur.getLong(3)
 
-                meetings.add(Meeting(
-                    meetingTitle = title,
-                    startTime = startTime,
-                    endTime = endTime
-                ))
+                meetings.add(
+                    CalendarEvent(
+                        title = title,
+                        startTime = startTime,
+                        endTime = endTime
+                    )
+                )
             }
 
             eventCur?.close()
@@ -100,7 +73,10 @@ class LocalCalendarSync(private val context: Context) : CloudCalendarSync {
     }
 
     override fun isAuthorized(): Boolean {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_CALENDAR
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun authorize(status: (Boolean) -> Unit) {

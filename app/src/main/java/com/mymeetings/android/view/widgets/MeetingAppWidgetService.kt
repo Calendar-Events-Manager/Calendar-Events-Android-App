@@ -14,11 +14,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import com.mymeetings.android.R
-import com.mymeetings.android.model.Meeting
+import com.mymeetings.android.model.CalendarEvent
 import com.mymeetings.android.view.activities.ui.home.MeetingsViewModel
-import kotlinx.android.synthetic.main.widget_meetings.view.*
 import org.koin.android.ext.android.get
-import org.koin.android.viewmodel.ext.android.getViewModel
 
 
 class MeetingAppWidgetService : RemoteViewsService() {
@@ -33,7 +31,7 @@ class MeetingWidgetRemoteViewFactory(
     private val meetingsViewModel: MeetingsViewModel
 ) : RemoteViewsService.RemoteViewsFactory, LifecycleOwner {
 
-    private var meetings : List<Meeting>? = null
+    private var calendarEvents : List<CalendarEvent>? = null
 
     private val lifecycleDispatcher: WidgetServiceLifecycleDispatcher =
         WidgetServiceLifecycleDispatcher(this)
@@ -42,7 +40,7 @@ class MeetingWidgetRemoteViewFactory(
     override fun onCreate() {
         lifecycleDispatcher.onConstructor()
         meetingsViewModel.meetingsLiveData.observe(this, Observer {
-            meetings = it
+            calendarEvents = it
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(
                 ComponentName(context, MeetingAppWidgetProvider::class.java)
@@ -58,7 +56,7 @@ class MeetingWidgetRemoteViewFactory(
     }
 
     override fun getItemId(position: Int): Long {
-        return meetings?.get(position)?.meetingId?:position.toLong()
+        return calendarEvents?.get(position)?.id?:position.toLong()
     }
 
     override fun onDataSetChanged() {
@@ -72,9 +70,9 @@ class MeetingWidgetRemoteViewFactory(
 
     override fun getViewAt(position: Int): RemoteViews {
         if(position != AdapterView.INVALID_POSITION) {
-            val meeting = meetings?.get(position)
+            val meeting = calendarEvents?.get(position)
             return RemoteViews(context.packageName, R.layout.item_meeting).apply {
-                setTextViewText(R.id.titleText, meeting?.meetingTitle?:"")
+                setTextViewText(R.id.titleText, meeting?.title?:"")
             }
         }
 
@@ -82,7 +80,7 @@ class MeetingWidgetRemoteViewFactory(
     }
 
     override fun getCount(): Int {
-        return meetings?.size?:0
+        return calendarEvents?.size?:0
     }
 
     override fun getViewTypeCount(): Int {

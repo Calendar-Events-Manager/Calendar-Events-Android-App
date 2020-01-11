@@ -4,23 +4,22 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 
-@Database(entities = [MeetingsDBModel::class], version = 1)
-abstract class MyMeetingsDatabase : RoomDatabase() {
+@Database(entities = [CalendarEventsDbModel::class], version = 1)
+abstract class CalendarEventsReminderDatabase : RoomDatabase() {
 
-    abstract fun getMeetingsDao(): MeetingsDao
+    abstract fun getMeetingsDao(): CalendarEventsDao
 
     companion object {
         @Volatile
-        private var INSTANCE: MyMeetingsDatabase? = null
+        private var INSTANCE: CalendarEventsReminderDatabase? = null
 
-        fun getDb(context: Context): MyMeetingsDatabase {
+        fun getDb(context: Context): CalendarEventsReminderDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    MyMeetingsDatabase::class.java,
-                    "my_meetings_db"
+                    CalendarEventsReminderDatabase::class.java,
+                    "calendar_events_reminder"
                 ).build()
                 INSTANCE = instance
                 instance
