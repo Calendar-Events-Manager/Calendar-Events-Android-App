@@ -16,6 +16,6 @@ class LocalCalendarChangeEventReceiver()
 
     override fun onReceive(context: Context?, intent: Intent?) {
         ConsoleLog.i(message = "Receiver received")
-        calendarEventsSyncManager.fetchCalendarEvents(CalendarFetchStrategyType.LOCAL_CALENDAR)
+        calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
     }
 }

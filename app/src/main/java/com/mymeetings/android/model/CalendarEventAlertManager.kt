@@ -1,7 +1,6 @@
 package com.mymeetings.android.model
 
 import com.mymeetings.android.utils.ClockUtils
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class CalendarEventAlertManager(private val clockUtils: ClockUtils) {
@@ -10,34 +9,27 @@ class CalendarEventAlertManager(private val clockUtils: ClockUtils) {
     private val normalTime = TimeUnit.MINUTES.toMillis(30)
 
 
-    fun getCalendarEventAlerts(calendarEvents : List<CalendarEvent>) : List<Pair<CalendarEvent, AlertType>> {
+    fun getCalendarEventAlerts(calendarEvents : List<CalendarEvent>) : List<CalendarEventWithViewAlert> {
         return calendarEvents.map {
-            Pair(it, getAlertTypeForCalendarEvent(it))
+            getAlertTypeForCalendarEvent(it)
         }
     }
 
-    private fun getAlertTypeForCalendarEvent(calendarEvent: CalendarEvent) : AlertType {
+    private fun getAlertTypeForCalendarEvent(calendarEvent: CalendarEvent) : CalendarEventWithViewAlert {
 
-        return when {
+        val viewAlert = when {
             calendarEvent.startTime < clockUtils.currentTimeMillis() -> {
-                AlertType.RUNNING
+                ViewAlertType.RUNNING
             }
             calendarEvent.startTime > clockUtils.currentTimeMillis() + priorityTime
                     && calendarEvent.priority.value >= CalendarEventPriority.MEDIUM.value -> {
-                AlertType.PRIORITY
+                ViewAlertType.PRIORITY
             }
             calendarEvent.startTime > clockUtils.currentTimeMillis() + normalTime -> {
-                AlertType.NORMAL
+                ViewAlertType.NORMAL
             }
-            else -> AlertType.LOW
+            else -> ViewAlertType.LOW
         }
-
+        return CalendarEventWithViewAlert(calendarEvent, viewAlert)
     }
-}
-
-enum class AlertType {
-    RUNNING,
-    PRIORITY,
-    NORMAL,
-    LOW
 }

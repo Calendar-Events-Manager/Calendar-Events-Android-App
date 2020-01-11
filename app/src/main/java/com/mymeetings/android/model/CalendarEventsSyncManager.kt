@@ -25,16 +25,24 @@ class CalendarEventsSyncManager(
         }
     }
 
-    fun fetchCalendarEvents(calendarFetchStrategyType: CalendarFetchStrategyType? = null) {
+    fun fetchCalendarEvents(
+        calendarTypesToFetch: List<CalendarFetchStrategyType> = listOf(
+            CalendarFetchStrategyType.LOCAL_CALENDAR,
+            CalendarFetchStrategyType.GOOGLE_CALENDAR
+        )
+    ) {
         val fetchUpTo = clockUtils.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)
         val fetchFrom = clockUtils.currentTimeMillis()
         CoroutineScope(Dispatchers.IO).launch {
             calendarEventsRepository.clearCalendarEvents()
             calendarFetchStrategies.forEach {
-                if (calendarFetchStrategyType == null
-                    || calendarFetchStrategyType == it.getCalendarFetchStrategyType()
-                ) {
-                    calendarEventsRepository.addCalendarEvents(it.fetchCalendarEvents(fetchFrom, fetchUpTo))
+                if (calendarTypesToFetch.contains(it.getCalendarFetchStrategyType())) {
+                    calendarEventsRepository.addCalendarEvents(
+                        it.fetchCalendarEvents(
+                            fetchFrom,
+                            fetchUpTo
+                        )
+                    )
                     getUpcomingCalendarEvents()
                 }
             }
