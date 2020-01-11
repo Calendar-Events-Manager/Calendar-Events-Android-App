@@ -2,13 +2,13 @@ package com.mymeetings.android.view.activities.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mymeetings.android.model.Meeting
-import com.mymeetings.android.model.MeetingsMaintainer
+import com.mymeetings.android.model.CalendarEvent
+import com.mymeetings.android.model.CalendarEventsSyncManager
 import kotlinx.coroutines.*
 
 class MeetingsViewModel(
-    private val meetingsMaintainer: MeetingsMaintainer,
-    val meetingsLiveData: MutableLiveData<List<Meeting>>) : ViewModel() {
+    private val calendarEventsSyncManager: CalendarEventsSyncManager,
+    val meetingsLiveData: MutableLiveData<List<CalendarEvent>>) : ViewModel() {
 
     companion object {
         const val MEETINGS_LIST_VIEW = "meetings_list_view"
@@ -18,15 +18,15 @@ class MeetingsViewModel(
 
     fun getEvents() {
         backgroundScope.launch {
-            val meetings = meetingsMaintainer.getUpcomingMeetings()
+            val meetings = calendarEventsSyncManager.getUpcomingMeetings()
             meetingsLiveData.postValue(meetings)
         }
     }
 
     fun syncEvents() {
         backgroundScope.launch {
-            meetingsMaintainer.syncCloudCalendar()
-            meetingsLiveData.postValue(meetingsMaintainer.getUpcomingMeetings())
+            calendarEventsSyncManager.syncCloudCalendar()
+            meetingsLiveData.postValue(calendarEventsSyncManager.getUpcomingMeetings())
         }
     }
 }

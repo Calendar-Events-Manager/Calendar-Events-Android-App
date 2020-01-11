@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.concurrent.TimeUnit
 
-@Entity(tableName = "meetings")
-data class MeetingsDBModel(
+@Entity(tableName = "calendar_events")
+data class CalendarEventsDbModel(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
