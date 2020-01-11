@@ -1,12 +1,12 @@
 package com.mymeetings.android.di
 
 import android.content.Context
-import com.mymeetings.android.db.CalendarEventsDao
 import com.mymeetings.android.db.CalendarEventsReminderDatabase
 import com.mymeetings.android.db.repositories.RoomCalendarEventsDataRepository
-import com.mymeetings.android.model.*
-import com.mymeetings.android.model.calendarFetchStrategies.GoogleCalendarFetchStrategy
-import com.mymeetings.android.model.calendarFetchStrategies.LocalCalendarFetchStrategy
+import com.mymeetings.android.model.strategies.GoogleCalendarFetchStrategy
+import com.mymeetings.android.model.strategies.LocalCalendarFetchStrategy
+import com.mymeetings.android.model.managers.CalendarEventAlertManager
+import com.mymeetings.android.model.managers.CalendarEventsSyncManager
 import com.mymeetings.android.utils.ClockUtils
 import com.mymeetings.android.view.activities.ui.home.CalendarEventsViewModel
 import com.mymeetings.android.view.widgets.CalendarEventWidgetRemoteViewFactory
@@ -25,7 +25,11 @@ class DIProvider(private val context: Context) {
 
         single { ClockUtils() }
 
-        single { CalendarEventAlertManager(get()) }
+        single {
+            CalendarEventAlertManager(
+                get()
+            )
+        }
 
         single { GoogleCalendarFetchStrategy() }
 

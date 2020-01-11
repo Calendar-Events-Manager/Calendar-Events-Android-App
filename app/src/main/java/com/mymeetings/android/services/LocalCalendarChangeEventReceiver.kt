@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.mymeetings.android.debug.ConsoleLog
-import com.mymeetings.android.model.CalendarEventsSyncManager
-import com.mymeetings.android.model.calendarFetchStrategies.CalendarFetchStrategyType
+import com.mymeetings.android.model.managers.CalendarEventsSyncManager
+import com.mymeetings.android.model.strategies.CalendarFetchStrategyType
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.get
 

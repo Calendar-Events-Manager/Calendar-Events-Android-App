@@ -1,4 +1,4 @@
-package com.mymeetings.android.model.calendarFetchStrategies
+package com.mymeetings.android.model.strategies
 
 import com.mymeetings.android.model.CalendarEvent
 

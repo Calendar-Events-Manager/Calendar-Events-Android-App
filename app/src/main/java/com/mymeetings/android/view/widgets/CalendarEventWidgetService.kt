@@ -16,8 +16,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import com.mymeetings.android.R
 import com.mymeetings.android.model.ViewAlertType
-import com.mymeetings.android.model.CalendarEvent
-import com.mymeetings.android.model.CalendarEventAlertManager
+import com.mymeetings.android.model.managers.CalendarEventAlertManager
 import com.mymeetings.android.model.CalendarEventWithViewAlert
 import com.mymeetings.android.utils.ClockUtils
 import com.mymeetings.android.view.activities.ui.home.CalendarEventsViewModel

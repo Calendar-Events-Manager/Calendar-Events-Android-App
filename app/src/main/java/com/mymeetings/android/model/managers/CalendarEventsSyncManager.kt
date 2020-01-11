@@ -1,9 +1,10 @@
-package com.mymeetings.android.model
+package com.mymeetings.android.model.managers
 
 import androidx.lifecycle.MutableLiveData
 import com.mymeetings.android.db.repositories.CalendarEventsRepository
-import com.mymeetings.android.model.calendarFetchStrategies.CalendarFetchStrategy
-import com.mymeetings.android.model.calendarFetchStrategies.CalendarFetchStrategyType
+import com.mymeetings.android.model.CalendarEvent
+import com.mymeetings.android.model.strategies.CalendarFetchStrategy
+import com.mymeetings.android.model.strategies.CalendarFetchStrategyType
 import com.mymeetings.android.utils.ClockUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

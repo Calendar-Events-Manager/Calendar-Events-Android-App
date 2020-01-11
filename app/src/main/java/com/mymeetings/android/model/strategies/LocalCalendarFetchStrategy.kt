@@ -1,4 +1,4 @@
-package com.mymeetings.android.model.calendarFetchStrategies
+package com.mymeetings.android.model.strategies
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -8,7 +8,6 @@ import android.database.Cursor
 import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
 import com.mymeetings.android.model.CalendarEvent
-import com.mymeetings.android.utils.ClockUtils
 
 class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchStrategy {
 
