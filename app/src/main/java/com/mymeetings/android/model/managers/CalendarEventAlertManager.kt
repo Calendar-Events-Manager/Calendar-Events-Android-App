@@ -18,8 +18,8 @@ class CalendarEventAlertManager(private val clockUtils: ClockUtils) {
                 it,
                 getViewAlertType(it),
                 getRelativeTime(it.startTime),
-                clockUtils.getTimeInHoursAndMinsWithCurrentDayContext(it.startTime),
-                clockUtils.getTimeInHoursAndMinsWithCurrentDayContext(it.endTime)
+                clockUtils.getFormattedTime(it.startTime),
+                clockUtils.getFormattedTime(it.endTime)
             )
         }
     }
