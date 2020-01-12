@@ -2,6 +2,7 @@ package com.mymeetings.android.utils
 
 import android.text.format.DateUtils
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class ClockUtils {
@@ -16,8 +17,8 @@ class ClockUtils {
         val hour = calendar.get(Calendar.HOUR)
         val min = calendar.get(Calendar.MINUTE)
         val amOrPm = calendar.get(Calendar.AM_PM)
-        val hourString = getFormattedTimePart(hour)
-        val minString = getFormattedTimePart(min)
+        val hourString = getFormattedTimePart(hour, true)
+        val minString = getFormattedTimePart(min, false)
         val amOrPmString = if(amOrPm == Calendar.AM) {
             "AM"
         } else {
@@ -27,9 +28,13 @@ class ClockUtils {
         return "$hourString:$minString $amOrPmString"
     }
 
-    private fun getFormattedTimePart(number: Int) = when {
-            number < 1 -> {
-                "00"
+    private fun getFormattedTimePart(number: Int, isHour : Boolean) = when {
+            number == 0 -> {
+                if(isHour) {
+                    "12"
+                } else {
+                    "00"
+                }
             }
             number < 10 -> {
                 "0${number}"
