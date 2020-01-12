@@ -79,7 +79,7 @@ class CalendarEventWidgetRemoteViewFactory(
                     val startTimeToEndTimeString = "${it.startTime} - ${it.endTime}"
                     if (it.viewAlertType == ViewAlertType.RUNNING) {
                         setTextViewText(R.id.runningTitleText, it.calendarEvent.title)
-                        setTextViewText(R.id.runninTimeText, startTimeToEndTimeString)
+                        setTextViewText(R.id.runningTimeText, startTimeToEndTimeString)
                         setViewVisibility(R.id.upcomingLayout, View.GONE)
                         setViewVisibility(R.id.runningLayout, View.VISIBLE)
                     } else {

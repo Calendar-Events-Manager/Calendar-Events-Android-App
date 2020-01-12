@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/runninTimeText"
+            android:layout_toStartOf="@id/runningTimeText"
             android:ellipsize="end"
             android:fontFamily="@font/roboto_regular"
             android:maxLines="1"
@@ -29,7 +29,7 @@
             tools:text="Catchup with Sherpa" />
 
         <TextView
-            android:id="@+id/runninTimeText"
+            android:id="@+id/runningTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

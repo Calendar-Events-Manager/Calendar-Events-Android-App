@@ -4,4 +4,5 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="empty_widget_view_text">No Upcoming Events</string>
 </resources>
