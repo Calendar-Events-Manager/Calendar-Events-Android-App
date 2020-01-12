@@ -42,7 +42,6 @@ class CalendarEventWidgetRemoteViewFactory(
     private val lifecycleDispatcher: WidgetServiceLifecycleDispatcher =
         WidgetServiceLifecycleDispatcher(this)
 
-
     override fun onCreate() {
         lifecycleDispatcher.onConstructor()
         calendarEventsViewModel.getCalendarEventLiveData().observe(this, Observer {
@@ -53,7 +52,7 @@ class CalendarEventWidgetRemoteViewFactory(
             )
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
         })
-        calendarEventsViewModel.syncEvents()
+        calendarEventsViewModel.getEvents()
     }
 
     override fun getLoadingView(): RemoteViews {
@@ -80,20 +79,26 @@ class CalendarEventWidgetRemoteViewFactory(
                 calendarEventWithAlertPair?.let {
                     if(it.viewAlertType == ViewAlertType.RUNNING) {
                         setTextViewText(R.id.runningTitleText, it.calendarEvent.title)
+                        setTextViewText(R.id.runninTimeText, it.startToEndTime)
                         setViewVisibility(R.id.upcomingLayout, View.GONE)
-                        setViewVisibility(R.id.runningTitleText, View.VISIBLE)
+                        setViewVisibility(R.id.runningLayout, View.VISIBLE)
                     } else {
                         setTextViewText(R.id.titleText, it.calendarEvent.title)
-                        setTextViewText(R.id.timeText, clockUtils.getTimeLeft(it.calendarEvent.startTime))
+                        setTextViewText(R.id.timeText, it.startToEndTime)
+                        setTextViewText(R.id.relativeTimeText, it.relativeTime)
                         setViewVisibility(R.id.upcomingLayout, View.VISIBLE)
-                        setViewVisibility(R.id.runningTitleText, View.GONE)
+                        setViewVisibility(R.id.runningLayout, View.GONE)
 
-                        if(it.viewAlertType == ViewAlertType.PRIORITY) {
-                            setTextColor(R.id.titleText, context.getColor(android.R.color.holo_red_dark))
-                        } else if(it.viewAlertType == ViewAlertType.NORMAL) {
-                            setTextColor(R.id.titleText, context.getColor(android.R.color.holo_orange_dark))
-                        } else {
-                            setTextColor(R.id.titleText, context.getColor(android.R.color.white))
+                        when (it.viewAlertType) {
+                            ViewAlertType.PRIORITY -> {
+                                setInt(R.id.upcomingLayout, "setBackgroundColor", context.getColor(android.R.color.holo_red_light))
+                            }
+                            ViewAlertType.NORMAL -> {
+                                setInt(R.id.upcomingLayout, "setBackgroundColor", context.getColor(android.R.color.holo_orange_light))
+                            }
+                            else -> {
+                                setInt(R.id.upcomingLayout, "setBackgroundColor", context.getColor(android.R.color.holo_blue_light))
+                            }
                         }
                     }
                 }
