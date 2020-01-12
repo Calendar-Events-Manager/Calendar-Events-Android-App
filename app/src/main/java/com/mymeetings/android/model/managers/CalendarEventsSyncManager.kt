@@ -38,11 +38,12 @@ class CalendarEventsSyncManager(
             calendarEventsRepository.clearCalendarEvents()
             calendarFetchStrategies.forEach {
                 if (calendarTypesToFetch.contains(it.getCalendarFetchStrategyType())) {
+                    val calendarEvents = it.fetchCalendarEvents(
+                        fetchFrom,
+                        fetchUpTo
+                    )
                     calendarEventsRepository.addCalendarEvents(
-                        it.fetchCalendarEvents(
-                            fetchFrom,
-                            fetchUpTo
-                        )
+                        calendarEvents
                     )
                     getUpcomingCalendarEvents()
                 }

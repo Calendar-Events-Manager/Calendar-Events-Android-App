@@ -13,34 +13,29 @@ class ClockUtils {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMillis
 
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val hour = calendar.get(Calendar.HOUR)
         val min = calendar.get(Calendar.MINUTE)
-        val am = calendar.get(Calendar.AM_PM)
-
-        val hourStr = if(hour < 10) {
-            "0${hour}"
-        } else {
-            "$hour"
-        }
-
-        val minStr = when {
-            min < 1 -> {
-                "00"
-            }
-            min < 10 -> {
-                "0${min}"
-            }
-            else -> {
-                "$min"
-            }
-        }
-
-        val ampmStr = if(am == Calendar.AM) {
+        val amOrPm = calendar.get(Calendar.AM_PM)
+        val hourString = getFormattedTimePart(hour)
+        val minString = getFormattedTimePart(min)
+        val amOrPmString = if(amOrPm == Calendar.AM) {
             "AM"
         } else {
             "PM"
         }
 
-        return "${hourStr}:${minStr} ${ampmStr}"
+        return "$hourString:$minString $amOrPmString"
     }
+
+    private fun getFormattedTimePart(number: Int) = when {
+            number < 1 -> {
+                "00"
+            }
+            number < 10 -> {
+                "0${number}"
+            }
+            else -> {
+                "$number"
+            }
+        }
 }
