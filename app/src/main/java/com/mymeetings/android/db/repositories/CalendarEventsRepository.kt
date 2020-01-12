@@ -4,7 +4,7 @@ import com.mymeetings.android.model.CalendarEvent
 
 interface CalendarEventsRepository {
 
-    suspend fun getUpcomingCalendarEvents(): List<CalendarEvent>
+    suspend fun getRelevantCalendarEvents(): List<CalendarEvent>
 
     suspend fun addCalendarEvent(calendarEvent: CalendarEvent)
 

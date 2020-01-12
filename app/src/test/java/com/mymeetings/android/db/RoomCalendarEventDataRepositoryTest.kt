@@ -39,9 +39,9 @@ class RoomCalendarEventDataRepositoryTest {
         } returns currentTimeMillis
 
         runBlocking {
-            calendarEventsDataRepository.getUpcomingCalendarEvents()
+            calendarEventsDataRepository.getRelevantCalendarEvents()
         }
 
-        coVerify { calendarEventsDao.getCalendarEventsBy(currentTimeMillis) }
+        coVerify { calendarEventsDao.getCalendarEventsEndingAfter(currentTimeMillis) }
     }
 }

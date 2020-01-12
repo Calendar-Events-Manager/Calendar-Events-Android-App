@@ -21,7 +21,7 @@ class CalendarEventsSyncManager(
 
     fun getUpcomingCalendarEvents() {
         CoroutineScope(Dispatchers.IO).launch {
-            val upComingEvents = calendarEventsRepository.getUpcomingCalendarEvents()
+            val upComingEvents = calendarEventsRepository.getRelevantCalendarEvents()
             calendarEventsLiveData.postValue(upComingEvents)
         }
     }

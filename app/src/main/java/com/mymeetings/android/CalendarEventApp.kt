@@ -1,7 +1,7 @@
 package com.mymeetings.android
 
 import android.app.Application
-import com.mymeetings.android.di.DIProvider
+import com.mymeetings.android.injections.InjectionsProvider
 import org.koin.android.ext.android.startKoin
 
 class CalendarEventApp : Application() {
@@ -9,6 +9,6 @@ class CalendarEventApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        startKoin(this, listOf(DIProvider(this).module))
+        startKoin(this, listOf(InjectionsProvider(this).module))
     }
 }
