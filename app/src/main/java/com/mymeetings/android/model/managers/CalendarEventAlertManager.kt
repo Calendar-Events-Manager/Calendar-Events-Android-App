@@ -14,21 +14,14 @@ class CalendarEventAlertManager(private val clockUtils: ClockUtils) {
 
     fun getCalendarEventAlerts(calendarEvents: List<CalendarEvent>): List<CalendarEventWithViewAlert> {
         return calendarEvents.map {
-            getAlertTypeForCalendarEvent(it)
+            CalendarEventWithViewAlert(
+                it,
+                getViewAlertType(it),
+                getRelativeTime(it.startTime),
+                clockUtils.getTimeInHoursAndMins(it.startTime),
+                clockUtils.getTimeInHoursAndMins(it.endTime)
+            )
         }
-    }
-
-    private fun getAlertTypeForCalendarEvent(calendarEvent: CalendarEvent): CalendarEventWithViewAlert {
-
-        val viewAlert = getViewAlertType(calendarEvent)
-        val relativeTime = getRelativeTime(calendarEvent.startTime)
-        val startToEndTime = getEventStartToEndTime(calendarEvent.startTime, calendarEvent.endTime)
-        return CalendarEventWithViewAlert(
-            calendarEvent,
-            viewAlert,
-            relativeTime,
-            startToEndTime
-        )
     }
 
     private fun getViewAlertType(calendarEvent: CalendarEvent): ViewAlertType {
@@ -44,13 +37,6 @@ class CalendarEventAlertManager(private val clockUtils: ClockUtils) {
             }
             else -> ViewAlertType.LOW
         }
-    }
-
-    private fun getEventStartToEndTime(startTime: Long, endTime: Long): String {
-        val startTimeInString = clockUtils.getTimeInHoursAndMins(startTime)
-        val endTimeInString = clockUtils.getTimeInHoursAndMins(startTime)
-
-        return "$startTimeInString - $endTimeInString"
     }
 
     private fun getRelativeTime(eventStartTime: Long): String {
