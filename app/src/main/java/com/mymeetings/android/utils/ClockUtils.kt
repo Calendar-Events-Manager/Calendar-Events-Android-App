@@ -10,7 +10,7 @@ class ClockUtils {
 
     fun getTimeLeft(timeInMillis : Long): String = DateUtils.getRelativeTimeSpanString(timeInMillis).toString()
 
-    fun getTimeInHoursAndMins(timeInMillis: Long): String {
+    fun getTimeInHoursAndMinsWithCurrentDayContext(timeInMillis: Long): String {
         val todayCalendar = Calendar.getInstance()
         todayCalendar.set(Calendar.HOUR_OF_DAY, 0)
         todayCalendar.set(Calendar.MINUTE, 0)
@@ -25,7 +25,7 @@ class ClockUtils {
         val min = eventCalendar.get(Calendar.MINUTE)
         val amOrPm = eventCalendar.get(Calendar.AM_PM)
 
-        val dayFromTodayStr = if(dayFromToday == 0) "" else "(${dayFromToday.toString()}) "
+        val dayFromTodayStr = if(dayFromToday == 0) "" else "(${dayFromToday+1}) "
         val hourString = getFormattedTimePart(hour, true)
         val minString = getFormattedTimePart(min, false)
         val amOrPmString = if(amOrPm == Calendar.AM) {
