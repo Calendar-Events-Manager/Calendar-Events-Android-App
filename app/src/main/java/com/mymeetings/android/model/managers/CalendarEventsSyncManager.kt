@@ -21,7 +21,7 @@ class CalendarEventsSyncManager(
 
     fun getUpcomingCalendarEvents() {
         CoroutineScope(Dispatchers.IO).launch {
-            val upComingEvents = calendarEventsRepository.getUpcomingCalendarEvents()
+            val upComingEvents = calendarEventsRepository.getRelevantCalendarEvents()
             calendarEventsLiveData.postValue(upComingEvents)
         }
     }
@@ -38,11 +38,12 @@ class CalendarEventsSyncManager(
             calendarEventsRepository.clearCalendarEvents()
             calendarFetchStrategies.forEach {
                 if (calendarTypesToFetch.contains(it.getCalendarFetchStrategyType())) {
+                    val calendarEvents = it.fetchCalendarEvents(
+                        fetchFrom,
+                        fetchUpTo
+                    )
                     calendarEventsRepository.addCalendarEvents(
-                        it.fetchCalendarEvents(
-                            fetchFrom,
-                            fetchUpTo
-                        )
+                        calendarEvents
                     )
                     getUpcomingCalendarEvents()
                 }

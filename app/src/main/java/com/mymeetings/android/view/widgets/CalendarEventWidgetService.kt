@@ -18,7 +18,6 @@ import com.mymeetings.android.R
 import com.mymeetings.android.model.ViewAlertType
 import com.mymeetings.android.model.managers.CalendarEventAlertManager
 import com.mymeetings.android.model.CalendarEventWithViewAlert
-import com.mymeetings.android.utils.ClockUtils
 import com.mymeetings.android.view.activities.ui.home.CalendarEventsViewModel
 import org.koin.android.ext.android.get
 
@@ -33,15 +32,13 @@ class CalendarEventWidgetService : RemoteViewsService() {
 class CalendarEventWidgetRemoteViewFactory(
     private val context: Context,
     private val calendarEventsViewModel: CalendarEventsViewModel,
-    private val calendarEventAlertManager: CalendarEventAlertManager,
-    private val clockUtils: ClockUtils
+    private val calendarEventAlertManager: CalendarEventAlertManager
 ) : RemoteViewsService.RemoteViewsFactory, LifecycleOwner {
 
-    private var calendarEventsWithViewAlertType : List<CalendarEventWithViewAlert>? = null
+    private var calendarEventsWithViewAlertType: List<CalendarEventWithViewAlert>? = null
 
     private val lifecycleDispatcher: WidgetServiceLifecycleDispatcher =
         WidgetServiceLifecycleDispatcher(this)
-
 
     override fun onCreate() {
         lifecycleDispatcher.onConstructor()
@@ -53,7 +50,7 @@ class CalendarEventWidgetRemoteViewFactory(
             )
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView)
         })
-        calendarEventsViewModel.syncEvents()
+        calendarEventsViewModel.getEvents()
     }
 
     override fun getLoadingView(): RemoteViews {
@@ -61,7 +58,8 @@ class CalendarEventWidgetRemoteViewFactory(
     }
 
     override fun getItemId(position: Int): Long {
-        return calendarEventsWithViewAlertType?.get(position)?.calendarEvent?.id?:position.toLong()
+        return calendarEventsWithViewAlertType?.get(position)?.calendarEvent?.id
+            ?: position.toLong()
     }
 
     override fun onDataSetChanged() {
@@ -74,26 +72,45 @@ class CalendarEventWidgetRemoteViewFactory(
     }
 
     override fun getViewAt(position: Int): RemoteViews {
-        if(position != AdapterView.INVALID_POSITION && calendarEventsWithViewAlertType?.size?:0 > position) {
+        if (position != AdapterView.INVALID_POSITION && calendarEventsWithViewAlertType?.size ?: 0 > position) {
             val calendarEventWithAlertPair = calendarEventsWithViewAlertType?.get(position)
             return RemoteViews(context.packageName, R.layout.item_meeting).apply {
                 calendarEventWithAlertPair?.let {
-                    if(it.viewAlertType == ViewAlertType.RUNNING) {
+                    val startTimeToEndTimeString = "${it.startTime} - ${it.endTime}"
+                    if (it.viewAlertType == ViewAlertType.RUNNING) {
                         setTextViewText(R.id.runningTitleText, it.calendarEvent.title)
+                        setTextViewText(R.id.runninTimeText, startTimeToEndTimeString)
                         setViewVisibility(R.id.upcomingLayout, View.GONE)
-                        setViewVisibility(R.id.runningTitleText, View.VISIBLE)
+                        setViewVisibility(R.id.runningLayout, View.VISIBLE)
                     } else {
                         setTextViewText(R.id.titleText, it.calendarEvent.title)
-                        setTextViewText(R.id.timeText, clockUtils.getTimeLeft(it.calendarEvent.startTime))
+                        setTextViewText(R.id.timeText, startTimeToEndTimeString)
+                        setTextViewText(R.id.timeLeftToStartText, it.timeLeftToStart)
                         setViewVisibility(R.id.upcomingLayout, View.VISIBLE)
-                        setViewVisibility(R.id.runningTitleText, View.GONE)
+                        setViewVisibility(R.id.runningLayout, View.GONE)
 
-                        if(it.viewAlertType == ViewAlertType.PRIORITY) {
-                            setTextColor(R.id.titleText, context.getColor(android.R.color.holo_red_dark))
-                        } else if(it.viewAlertType == ViewAlertType.NORMAL) {
-                            setTextColor(R.id.titleText, context.getColor(android.R.color.holo_orange_dark))
-                        } else {
-                            setTextColor(R.id.titleText, context.getColor(android.R.color.white))
+                        when (it.viewAlertType) {
+                            ViewAlertType.PRIORITY -> {
+                                setInt(
+                                    R.id.upcomingLayout,
+                                    "setBackgroundColor",
+                                    context.getColor(android.R.color.holo_red_light)
+                                )
+                            }
+                            ViewAlertType.NORMAL -> {
+                                setInt(
+                                    R.id.upcomingLayout,
+                                    "setBackgroundColor",
+                                    context.getColor(android.R.color.holo_orange_light)
+                                )
+                            }
+                            else -> {
+                                setInt(
+                                    R.id.upcomingLayout,
+                                    "setBackgroundColor",
+                                    context.getColor(android.R.color.holo_blue_light)
+                                )
+                            }
                         }
                     }
                 }
@@ -105,7 +122,7 @@ class CalendarEventWidgetRemoteViewFactory(
     }
 
     override fun getCount(): Int {
-        return calendarEventsWithViewAlertType?.size?:0
+        return calendarEventsWithViewAlertType?.size ?: 0
     }
 
     override fun getViewTypeCount(): Int {

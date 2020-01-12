@@ -1,44 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:background="@android:color/holo_blue_light">
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/runningTitleText"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/runningLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        tools:visibility="gone"
-        tools:text="Catchup with Sherpa"/>
+        android:background="@android:color/holo_blue_light"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/runningTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/runninTimeText"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_regular"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="Catchup with Sherpa" />
+
+        <TextView
+            android:id="@+id/runninTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="10:00 AM - 12:00 AM"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
 
 
     <LinearLayout
         android:id="@+id/upcomingLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="8dp"
+        android:background="@android:color/holo_blue_light"
+        android:orientation="vertical"
+        android:padding="4dp"
+        tools:visibility="gone">
 
-        <TextView
-            android:id="@+id/timeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            tools:text="In 30 Mins"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/timeLeftToStartText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/timeText"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="In 30 Mins" />
+
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_light"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="10:00 AM - 12:00 AM"
+                tools:visibility="visible" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
-            tools:text="Catchup with Sherpa"/>
-
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_regular"
+            tools:text="Catchup with Sherpa" />
 
 
     </LinearLayout>

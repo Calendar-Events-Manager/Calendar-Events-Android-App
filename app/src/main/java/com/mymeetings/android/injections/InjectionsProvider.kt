@@ -1,4 +1,4 @@
-package com.mymeetings.android.di
+package com.mymeetings.android.injections
 
 import android.content.Context
 import com.mymeetings.android.db.CalendarEventsReminderDatabase
@@ -13,7 +13,7 @@ import com.mymeetings.android.view.widgets.CalendarEventWidgetRemoteViewFactory
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
-class DIProvider(private val context: Context) {
+class InjectionsProvider(private val context: Context) {
 
     val module = module {
 
@@ -39,8 +39,7 @@ class DIProvider(private val context: Context) {
             CalendarEventsSyncManager(
                 get<RoomCalendarEventsDataRepository>(),
                 listOf(
-                    get<LocalCalendarFetchStrategy>(),
-                    get<GoogleCalendarFetchStrategy>()
+                    get<LocalCalendarFetchStrategy>()
                 ),
                 get()
             )
@@ -48,6 +47,6 @@ class DIProvider(private val context: Context) {
 
         viewModel { CalendarEventsViewModel(get()) }
 
-        factory { CalendarEventWidgetRemoteViewFactory(context, get(), get(), get()) }
+        factory { CalendarEventWidgetRemoteViewFactory(context, get(), get()) }
     }
 }
