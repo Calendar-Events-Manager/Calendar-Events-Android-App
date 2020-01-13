@@ -38,7 +38,7 @@ class CalendarEventsWidgetProvider : AppWidgetProvider() {
                     R.layout.widget_meetings
                 ).apply {
                     setRemoteAdapter(R.id.listView, intent)
-                    setEmptyView(R.id.listView, R.id.emptyTextView)
+                    setEmptyView(R.id.listView, R.id.empty_widget_layout)
                 }
 
                 // Tell the AppWidgetManager to perform an update on the current app widget
