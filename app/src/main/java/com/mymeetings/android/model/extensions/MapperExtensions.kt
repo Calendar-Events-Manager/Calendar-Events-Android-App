@@ -1,9 +1,9 @@
 package com.mymeetings.android.model.extensions
 
-import com.mymeetings.android.db.CalendarEventsDbModel
+import com.mymeetings.android.db.CalendarEventDbModel
 import com.mymeetings.android.model.CalendarEvent
 
-fun CalendarEvent.toDbModel() = CalendarEventsDbModel(
+fun CalendarEvent.toDbModel() = CalendarEventDbModel(
     id = this.id,
     title = this.title,
     startTime = this.startTime,
@@ -11,7 +11,7 @@ fun CalendarEvent.toDbModel() = CalendarEventsDbModel(
     isDone = this.isDeleted
 )
 
-fun CalendarEventsDbModel.toDomainModel() = CalendarEvent(
+fun CalendarEventDbModel.toDomainModel() = CalendarEvent(
     id = this.id,
     title = this.title,
     startTime = this.startTime,
@@ -21,4 +21,4 @@ fun CalendarEventsDbModel.toDomainModel() = CalendarEvent(
 
 fun List<CalendarEvent>.toDbModelCollection() = this.map { it.toDbModel() }
 
-fun List<CalendarEventsDbModel>.toDomainModelCollection() = this.map { it.toDomainModel() }
+fun List<CalendarEventDbModel>.toDomainModelCollection() = this.map { it.toDomainModel() }

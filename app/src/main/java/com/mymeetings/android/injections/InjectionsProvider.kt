@@ -47,6 +47,6 @@ class InjectionsProvider(private val context: Context) {
 
         viewModel { CalendarEventsViewModel(get()) }
 
-        factory { CalendarEventWidgetRemoteViewFactory(context, get(), get()) }
+        factory { CalendarEventWidgetRemoteViewFactory(context, get(), get(), get()) }
     }
 }
