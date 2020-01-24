@@ -1,9 +1,9 @@
 package com.mymeetings.android.model.extensions
 
+import com.google.common.truth.Truth.assertThat
 import com.mymeetings.android.db.CalendarEventsDbModel
 import com.mymeetings.android.model.CalendarEvent
 import com.mymeetings.android.model.CalendarEventPriority
-import org.junit.Assert.*
 import org.junit.Test
 
 class MapperExtensionsKtTest {
@@ -34,7 +34,7 @@ class MapperExtensionsKtTest {
             isDone = isDeleted
         )
 
-        assertEquals(expectedData, calendarEvent.toDbModel())
+        assertThat(calendarEvent.toDbModel()).isEqualTo(expectedData)
     }
 
     @Test
@@ -53,12 +53,15 @@ class MapperExtensionsKtTest {
             isDone = isDeleted
         )
 
+        val expected = CalendarEvent(
+            id = id,
+            title = title,
+            startTime = startTime,
+            endTime = endTime,
+            isDeleted = isDeleted
+        )
         val domainModel = calendarEvent.toDomainModel()
 
-        assertEquals(id, domainModel.id)
-        assertEquals(title, domainModel.title)
-        assertEquals(startTime, domainModel.startTime)
-        assertEquals(endTime, domainModel.endTime)
-        assertEquals(isDeleted, domainModel.isDeleted)
+        assertThat(domainModel).isEqualTo(expected)
     }
 }

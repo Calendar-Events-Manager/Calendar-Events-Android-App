@@ -23,18 +23,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    def androidx_version = "2.1.0"
+    implementation "androidx.navigation:navigation-fragment:$androidx_version"
+    implementation "androidx.navigation:navigation-ui:$androidx_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$androidx_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$androidx_version"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+
     // AndroidJUnitRunner and JUnit Rules
     def junit_version = '1.2.0'
-    implementation 'androidx.navigation:navigation-fragment:2.0.0'
-    implementation 'androidx.navigation:navigation-ui:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
     androidTestImplementation "androidx.test:runner:$junit_version"
     androidTestUtil "androidx.test:orchestrator:$junit_version"
 
@@ -78,4 +87,6 @@ dependencies {
     androidTestImplementation "org.koin:koin-test:$koin_version"
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    testImplementation "com.google.truth:truth:1.0.1"
 }
