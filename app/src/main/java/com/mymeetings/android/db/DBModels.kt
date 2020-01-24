@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.concurrent.TimeUnit
 
 @Entity(tableName = "calendar_events")
-data class CalendarEventsDbModel(
+data class CalendarEventDbModel(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
