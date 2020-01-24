@@ -1,6 +1,7 @@
 package com.mymeetings.android.db
 
 import com.mymeetings.android.db.repositories.RoomCalendarEventsDataRepository
+import com.mymeetings.android.model.CalendarEvent
 import com.mymeetings.android.utils.ClockUtils
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -32,7 +33,7 @@ class RoomCalendarEventDataRepositoryTest {
     }
 
     @Test
-    fun shouldGetUpcomingMeetings() {
+    fun `getUpComingEvents should call Dao_getCalendarEvent with current time from clockUtils`() {
         val currentTimeMillis = System.currentTimeMillis()
         coEvery {
             clockUtils.currentTimeMillis()
@@ -44,4 +45,106 @@ class RoomCalendarEventDataRepositoryTest {
 
         coVerify { calendarEventsDao.getCalendarEventsEndingAfter(currentTimeMillis) }
     }
+
+    @Test
+    fun `addCalendarEvent should call Dao_addCalendarEvent()`() {
+
+        val title = "ABC"
+        val startTime = 1L
+        val endTime = 2L
+
+        runBlocking {
+            calendarEventsDataRepository.addCalendarEvent(
+                CalendarEvent(
+                    title = title,
+                    startTime = startTime,
+                    endTime = endTime
+                )
+            )
+        }
+
+        coVerify {
+            calendarEventsDao.addCalendarEvent(
+                CalendarEventsDbModel(
+                    title = title,
+                    startTime = startTime,
+                    endTime = endTime
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `addCalendarEvents should call Dao_addCalendarEvents()`() {
+
+        val title = "ABC"
+        val startTime = 1L
+        val endTime = 2L
+
+        runBlocking {
+            calendarEventsDataRepository.addCalendarEvents(
+                listOf(
+                    CalendarEvent(
+                        title = title,
+                        startTime = startTime,
+                        endTime = endTime
+                    )
+                )
+            )
+        }
+
+        coVerify {
+            calendarEventsDao.addCalendarEvents(
+                listOf(
+                    CalendarEventsDbModel(
+                        title = title,
+                        startTime = startTime,
+                        endTime = endTime
+                    )
+                )
+            )
+        }
+    }
+
+
+    @Test
+    fun `updateCalendarEvent should call Dao_updateCalendarEvent()`() {
+
+        val title = "ABC"
+        val startTime = 1L
+        val endTime = 2L
+
+        runBlocking {
+            calendarEventsDataRepository.updateCalendarEvents(
+                CalendarEvent(
+                    title = title,
+                    startTime = startTime,
+                    endTime = endTime
+                )
+            )
+        }
+
+        coVerify {
+            calendarEventsDao.updateCalendarEvent(
+                CalendarEventsDbModel(
+                    title = title,
+                    startTime = startTime,
+                    endTime = endTime
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `clearCalendarEvents should call Dao_purgeCalendarEvent()`() {
+
+        runBlocking {
+            calendarEventsDataRepository.clearCalendarEvents()
+        }
+
+        coVerify {
+            calendarEventsDao.purgeCalendarEvents()
+        }
+    }
+
 }
