@@ -85,14 +85,15 @@ class CalendarEventWidgetRemoteViewFactory(
         calendarEventWithAlert: CalendarEventWithAlert
     ) {
         val calendarEvent = calendarEventWithAlert.calendarEvent
-        val calendarEventViewAlert = calendarEventWithAlert.eventViewAlert
 
         val startTimeToEndTimeString =
             "${clockUtils.getFormattedTime(calendarEvent.startTime)} - ${clockUtils.getFormattedTime(
                 calendarEvent.endTime
             )}"
 
-        if (calendarEventViewAlert.viewAlertType == ViewAlertType.RUNNING) {
+        val viewAlertType = calendarEventWithAlert.viewAlertType(clockUtils.currentTimeMillis())
+
+        if (viewAlertType == ViewAlertType.RUNNING) {
             remoteViews.setTextViewText(R.id.runningTitleText, calendarEvent.title)
             remoteViews.setTextViewText(R.id.runningTimeText, startTimeToEndTimeString)
             remoteViews.setViewVisibility(R.id.upcomingLayout, View.GONE)
@@ -107,7 +108,7 @@ class CalendarEventWidgetRemoteViewFactory(
             remoteViews.setViewVisibility(R.id.upcomingLayout, View.VISIBLE)
             remoteViews.setViewVisibility(R.id.runningLayout, View.GONE)
 
-            val colorResId = when (calendarEventViewAlert.viewAlertType) {
+            val colorResId = when (viewAlertType) {
                 ViewAlertType.PRIORITY -> {
                     android.R.color.holo_red_light
                 }

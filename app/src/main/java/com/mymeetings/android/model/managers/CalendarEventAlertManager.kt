@@ -6,15 +6,8 @@ import java.util.concurrent.TimeUnit
 
 class CalendarEventAlertManager(private val clockUtils: ClockUtils) {
 
-    private val priorityTime = TimeUnit.MINUTES.toMillis(10)
+    private val reminderBufferInMillis = TimeUnit.MINUTES.toMillis(10)
 
     fun getCalendarEventAlerts(calendarEvents: List<CalendarEvent>): List<CalendarEventWithAlert> =
-        calendarEvents.map { CalendarEventWithAlert(it, getViewAlert(it)) }
-
-
-    private fun getViewAlert(calendarEvent: CalendarEvent) = EventViewAlert(
-        timeToShowItAsImmediateEvent = calendarEvent.startTime - priorityTime,
-        timeToShowItAsRunningEvent = calendarEvent.startTime,
-        clockUtils = clockUtils
-    )
+        calendarEvents.map { CalendarEventWithAlert(it, it.startTime - reminderBufferInMillis) }
 }
