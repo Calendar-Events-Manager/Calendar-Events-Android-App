@@ -1,9 +1,8 @@
 package com.mymeetings.android.model.extensions
 
 import com.google.common.truth.Truth.assertThat
-import com.mymeetings.android.db.CalendarEventsDbModel
+import com.mymeetings.android.db.CalendarEventDbModel
 import com.mymeetings.android.model.CalendarEvent
-import com.mymeetings.android.model.CalendarEventPriority
 import org.junit.Test
 
 class MapperExtensionsKtTest {
@@ -14,7 +13,6 @@ class MapperExtensionsKtTest {
         val title = "ABC"
         val startTime = 1L
         val endTime = 2L
-        val priority = CalendarEventPriority.MEDIUM
         val isDeleted = false
 
         val calendarEvent = CalendarEvent(
@@ -22,11 +20,10 @@ class MapperExtensionsKtTest {
             title = title,
             startTime = startTime,
             endTime = endTime,
-            priority = priority,
             isDeleted = isDeleted
         )
 
-        val expectedData = CalendarEventsDbModel(
+        val expectedData = CalendarEventDbModel(
             id = id,
             title = title,
             startTime = startTime,
@@ -45,7 +42,7 @@ class MapperExtensionsKtTest {
         val endTime = 2L
         val isDeleted = false
 
-        val calendarEvent = CalendarEventsDbModel(
+        val calendarEvent = CalendarEventDbModel(
             id = id,
             title = title,
             startTime = startTime,
