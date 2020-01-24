@@ -2,22 +2,29 @@ package com.mymeetings.android.utils
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-
+import java.util.*
 
 class ClockUtilsTest {
 
-    @Test
-    fun `should get current time in milliseconds`() {
-        val actual = ClockUtils().currentTimeMillis()
-        val expected = System.currentTimeMillis()
+    private val UTC_TIME_ZONE = TimeZone.getTimeZone("Europe/London")
 
-        assertThat(actual).isAtMost(expected)
+    @Test
+    fun `getFormattedTime should format time as hh mm a pattern for AM`() {
+        val timeInMillis = 1579495210000
+        val expectedFormattedTime = "10:10 AM" // for GMT +5.30
+
+        val actualFormattedTime = ClockUtils().getFormattedTime(timeInMillis)
+
+        assertThat(actualFormattedTime).isEqualTo(expectedFormattedTime)
     }
 
     @Test
-    fun `getFormattedTime should format time as hh mm a pattern`() {
-        val timeInMillis = 1579530080000 //time of 07:51 for GMT +5.30
+    fun `getFormattedTime should format time as hh mm a pattern for PM`() {
+        val timeInMillis = 1579530080000
+        val expectedFormattedTime = "07:51 PM" // for GMT +5.30
 
-        assertThat(ClockUtils().getFormattedTime(timeInMillis)).isEqualTo("07:51 PM")
+        val actualFormattedTime = ClockUtils().getFormattedTime(timeInMillis)
+
+        assertThat(actualFormattedTime).isEqualTo(expectedFormattedTime)
     }
 }
