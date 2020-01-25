@@ -65,7 +65,7 @@ class RoomCalendarEventDataRepositoryTest {
 
         coVerify {
             calendarEventsDao.addCalendarEvent(
-                CalendarEventsDbModel(
+                CalendarEventDbModel(
                     title = title,
                     startTime = startTime,
                     endTime = endTime
@@ -96,7 +96,7 @@ class RoomCalendarEventDataRepositoryTest {
         coVerify {
             calendarEventsDao.addCalendarEvents(
                 listOf(
-                    CalendarEventsDbModel(
+                    CalendarEventDbModel(
                         title = title,
                         startTime = startTime,
                         endTime = endTime
@@ -126,7 +126,7 @@ class RoomCalendarEventDataRepositoryTest {
 
         coVerify {
             calendarEventsDao.updateCalendarEvent(
-                CalendarEventsDbModel(
+                CalendarEventDbModel(
                     title = title,
                     startTime = startTime,
                     endTime = endTime
