@@ -51,11 +51,11 @@ class CalendarEventsSyncManagerTest {
         val calendarEvents = listOf(CalendarEvent(title = "BlaBla", startTime = 0L, endTime = 0L))
 
         coEvery { calendarEventsRepository.getRelevantCalendarEvents() } returns calendarEvents
-
         calendarEventsSyncManager.calendarEventsLiveData.observeForever(observer)
+
         calendarEventsSyncManager.getUpcomingCalendarEvents()
 
-        verify { observer.onChanged(calendarEvents) }
+        coVerify { observer.onChanged(calendarEvents) }
     }
 
     @Test
