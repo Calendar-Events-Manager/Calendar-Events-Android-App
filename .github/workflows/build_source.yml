@@ -9,5 +9,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run Unit Tests
-      run: ./gradlew clean build
+    - name: Compile Source and Run Tests
+      run: sh gradlew clean build
