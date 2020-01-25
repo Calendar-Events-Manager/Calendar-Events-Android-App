@@ -10,7 +10,9 @@ import com.mymeetings.android.utils.ClockUtils
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -53,9 +55,11 @@ class CalendarEventsSyncManagerTest {
         coEvery { calendarEventsRepository.getRelevantCalendarEvents() } returns calendarEvents
         calendarEventsSyncManager.calendarEventsLiveData.observeForever(observer)
 
-        calendarEventsSyncManager.getUpcomingCalendarEvents()
+        runBlocking {
+            calendarEventsSyncManager.getUpcomingCalendarEvents()
+        }
 
-        coVerify { observer.onChanged(calendarEvents) }
+        verify { observer.onChanged(calendarEvents) }
     }
 
     @Test
@@ -74,7 +78,9 @@ class CalendarEventsSyncManagerTest {
             calendarFetchStrategy.getCalendarFetchStrategyType()
         } returns CalendarFetchStrategyType.LOCAL_CALENDAR
 
-        calendarEventsSyncManager.fetchCalendarEvents()
+        runBlocking {
+            calendarEventsSyncManager.fetchCalendarEvents()
+        }
 
         coVerifyOrder {
             calendarEventsRepository.clearCalendarEvents()
