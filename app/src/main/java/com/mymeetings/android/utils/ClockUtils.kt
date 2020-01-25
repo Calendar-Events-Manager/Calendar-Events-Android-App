@@ -5,7 +5,6 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class ClockUtils {
     fun currentTimeMillis() = System.currentTimeMillis()
 
@@ -19,7 +18,7 @@ class ClockUtils {
         DateUtils.getRelativeTimeSpanString(timeInMillis).toString()
 
     fun getFormattedTime(timeInMillis: Long): String {
-        val formatter: DateFormat = SimpleDateFormat("hh:mm a", Locale.UK)
+        val formatter: DateFormat = SimpleDateFormat("hh:mm a", Locale.US)
         return formatter.format(getDate(timeInMillis))
     }
 }

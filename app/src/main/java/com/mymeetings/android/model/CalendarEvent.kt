@@ -1,6 +1,6 @@
 package com.mymeetings.android.model
 
-class CalendarEvent(
+data class CalendarEvent(
     val id : Long? = null,
     var title : String,
     var startTime : Long,

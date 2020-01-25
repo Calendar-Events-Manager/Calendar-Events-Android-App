@@ -23,7 +23,7 @@ class MapperExtensionsKtTest {
             isDeleted = isDeleted
         )
 
-        val expectedData = CalendarEventDbModel(
+        val expectedCalendarEventDb = CalendarEventDbModel(
             id = id,
             title = title,
             startTime = startTime,
@@ -31,7 +31,9 @@ class MapperExtensionsKtTest {
             isDone = isDeleted
         )
 
-        assertThat(calendarEvent.toDbModel()).isEqualTo(expectedData)
+        val actualCalendarEventDb = calendarEvent.toDbModel()
+
+        assertThat(actualCalendarEventDb).isEqualTo(expectedCalendarEventDb)
     }
 
     @Test
@@ -42,7 +44,7 @@ class MapperExtensionsKtTest {
         val endTime = 2L
         val isDeleted = false
 
-        val calendarEvent = CalendarEventDbModel(
+        val calendarEventDb = CalendarEventDbModel(
             id = id,
             title = title,
             startTime = startTime,
@@ -50,15 +52,16 @@ class MapperExtensionsKtTest {
             isDone = isDeleted
         )
 
-        val expected = CalendarEvent(
+        val expectedCalendarEvent = CalendarEvent(
             id = id,
             title = title,
             startTime = startTime,
             endTime = endTime,
             isDeleted = isDeleted
         )
-        val domainModel = calendarEvent.toDomainModel()
 
-        assertThat(domainModel).isEqualTo(expected)
+        val actualCalendarEvent = calendarEventDb.toDomainModel()
+
+        assertThat(actualCalendarEvent).isEqualTo(expectedCalendarEvent)
     }
 }
