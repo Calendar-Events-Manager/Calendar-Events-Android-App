@@ -6,6 +6,7 @@ import com.mymeetings.android.debug.ConsoleLog
 import com.mymeetings.android.model.managers.CalendarEventsSyncManager
 import com.mymeetings.android.model.strategies.CalendarFetchStrategyType
 import io.mockk.MockKAnnotations
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.verify
@@ -47,7 +48,7 @@ class LocalCalendarChangeEventReceiverTest : KoinTest {
 
         LocalCalendarChangeEventReceiver().onReceive(context, intent)
 
-        verify {
+        coVerify {
             calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
         }
     }
