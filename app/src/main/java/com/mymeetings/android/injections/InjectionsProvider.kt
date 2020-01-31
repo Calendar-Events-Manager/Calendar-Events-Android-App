@@ -10,7 +10,7 @@ import com.mymeetings.android.model.strategies.LocalCalendarFetchStrategy
 import com.mymeetings.android.model.managers.CalendarEventAlertManager
 import com.mymeetings.android.model.managers.CalendarEventsSyncManager
 import com.mymeetings.android.utils.ClockUtils
-import com.mymeetings.android.view.activities.ui.home.CalendarEventsViewModel
+import com.mymeetings.android.view.viewModels.CalendarEventsViewModel
 import com.mymeetings.android.view.widgets.CalendarEventWidgetRemoteViewFactory
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
@@ -28,9 +28,7 @@ class InjectionsProvider(private val context: Context) {
         single { ClockUtils() }
 
         single {
-            CalendarEventAlertManager(
-                get()
-            )
+            CalendarEventAlertManager()
         }
 
         single { GoogleCalendarFetchStrategy() }
@@ -52,8 +50,8 @@ class InjectionsProvider(private val context: Context) {
             )
         }
 
-        viewModel { CalendarEventsViewModel(get()) }
+        viewModel { CalendarEventsViewModel(get(), get(), get()) }
 
-        factory { CalendarEventWidgetRemoteViewFactory(context, get(), get(), get()) }
+        factory { CalendarEventWidgetRemoteViewFactory(context, get()) }
     }
 }

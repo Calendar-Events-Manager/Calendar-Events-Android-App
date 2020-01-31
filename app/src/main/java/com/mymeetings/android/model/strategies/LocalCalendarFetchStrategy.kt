@@ -49,7 +49,7 @@ class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchSt
 
             val meetings = mutableListOf<CalendarEvent>()
             while (eventCur?.moveToNext() == true) {
-                val title = eventCur.getString(1)
+                val title = eventCur.getString(1)?:""
                 val startTime = eventCur.getLong(2)
                 val endTime = eventCur.getLong(3)
 

@@ -1,13 +1,14 @@
 package com.mymeetings.android.model.managers
 
 import com.mymeetings.android.model.*
-import com.mymeetings.android.utils.ClockUtils
 import java.util.concurrent.TimeUnit
 
-class CalendarEventAlertManager(private val clockUtils: ClockUtils) {
+class CalendarEventAlertManager {
 
     private val reminderBufferInMillis = TimeUnit.MINUTES.toMillis(10)
 
-    fun getCalendarEventAlerts(calendarEvents: List<CalendarEvent>): List<CalendarEventWithAlert> =
-        calendarEvents.map { CalendarEventWithAlert(it, it.startTime - reminderBufferInMillis) }
+    fun getCalendarEventAlert(calendarEvent: CalendarEvent) : CalendarEventAlert =
+        CalendarEventAlert(
+            startTime = calendarEvent.startTime,
+            reminderTime = calendarEvent.startTime - reminderBufferInMillis)
 }

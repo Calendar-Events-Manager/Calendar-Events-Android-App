@@ -6,6 +6,9 @@ import android.content.Intent
 import com.mymeetings.android.debug.ConsoleLog
 import com.mymeetings.android.model.managers.CalendarEventsSyncManager
 import com.mymeetings.android.model.strategies.CalendarFetchStrategyType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.get
 
@@ -17,6 +20,8 @@ class LocalCalendarChangeEventReceiver
 
     override fun onReceive(context: Context?, intent: Intent?) {
         consoleLog.i(message = "on receive called")
-        calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
+        CoroutineScope(Dispatchers.IO).launch {
+            calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
+        }
     }
 }
