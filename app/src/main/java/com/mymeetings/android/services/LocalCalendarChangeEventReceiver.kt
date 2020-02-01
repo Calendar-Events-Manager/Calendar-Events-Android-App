@@ -19,7 +19,7 @@ class LocalCalendarChangeEventReceiver
     private val consoleLog : ConsoleLog = get()
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        consoleLog.i(message = "on receive called")
+        consoleLog.i(tag = "LocalCalendarChangeEventReceiver", message = "onReceive called")
         CoroutineScope(Dispatchers.IO).launch {
             calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
         }

@@ -44,12 +44,12 @@ class LocalCalendarChangeEventReceiverTest : KoinTest {
     @Test
     fun onReceiveShouldCallCalendarEventSyncManagerToFetchLocalCalendarEvents() {
 
-        LocalCalendarChangeEventReceiver().onReceive(context, Intent())
-
         runBlocking {
-            coVerify {
-                calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
-            }
+            LocalCalendarChangeEventReceiver().onReceive(context, Intent())
+        }
+
+        coVerify {
+            calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
         }
     }
 }
