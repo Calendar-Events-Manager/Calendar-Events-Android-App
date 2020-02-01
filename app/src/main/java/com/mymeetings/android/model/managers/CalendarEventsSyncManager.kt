@@ -20,7 +20,7 @@ class CalendarEventsSyncManager(
         calendarEventsLiveData.postValue(calendarEventsRepository.getRelevantCalendarEvents())
     }
 
-    suspend fun fetchCalendarEvents(
+    suspend fun syncCalendarEvents(
         calendarTypesToFetch: List<CalendarFetchStrategyType> = listOf(
             CalendarFetchStrategyType.LOCAL_CALENDAR,
             CalendarFetchStrategyType.GOOGLE_CALENDAR

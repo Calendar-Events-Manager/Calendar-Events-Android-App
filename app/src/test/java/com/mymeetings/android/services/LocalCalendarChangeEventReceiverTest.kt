@@ -49,7 +49,7 @@ class LocalCalendarChangeEventReceiverTest : KoinTest {
         }
 
         coVerify {
-            calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
+            calendarEventsSyncManager.syncCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
         }
     }
 }

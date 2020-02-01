@@ -58,7 +58,7 @@ class CalendarEventsViewModel(
 
     fun syncEvents() {
         backgroundScope.launch {
-            calendarEventsSyncManager.fetchCalendarEvents()
+            calendarEventsSyncManager.syncCalendarEvents()
         }
     }
 

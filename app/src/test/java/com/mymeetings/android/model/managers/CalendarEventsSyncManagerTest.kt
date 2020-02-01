@@ -12,7 +12,6 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -79,7 +78,7 @@ class CalendarEventsSyncManagerTest {
         } returns CalendarFetchStrategyType.LOCAL_CALENDAR
 
         runBlocking {
-            calendarEventsSyncManager.fetchCalendarEvents()
+            calendarEventsSyncManager.syncCalendarEvents()
         }
 
         coVerifyOrder {

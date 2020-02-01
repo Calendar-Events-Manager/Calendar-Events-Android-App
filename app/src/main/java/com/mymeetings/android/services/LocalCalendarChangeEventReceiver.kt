@@ -21,7 +21,7 @@ class LocalCalendarChangeEventReceiver
     override fun onReceive(context: Context?, intent: Intent?) {
         consoleLog.i(tag = "LocalCalendarChangeEventReceiver", message = "onReceive called")
         CoroutineScope(Dispatchers.IO).launch {
-            calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
+            calendarEventsSyncManager.syncCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
         }
     }
 }
