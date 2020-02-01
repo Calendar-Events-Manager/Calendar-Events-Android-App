@@ -9,7 +9,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.koin.dsl.module.module
@@ -44,12 +44,12 @@ class LocalCalendarChangeEventReceiverTest : KoinTest {
     @Test
     fun onReceiveShouldCallCalendarEventSyncManagerToFetchLocalCalendarEvents() {
 
-        val intent = Intent()
+        LocalCalendarChangeEventReceiver().onReceive(context, Intent())
 
-        LocalCalendarChangeEventReceiver().onReceive(context, intent)
-
-        coVerify {
-            calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
+        runBlocking {
+            coVerify {
+                calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
+            }
         }
     }
 }
