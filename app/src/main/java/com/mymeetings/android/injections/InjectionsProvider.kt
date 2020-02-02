@@ -5,10 +5,10 @@ import com.mymeetings.android.BuildConfig
 import com.mymeetings.android.db.CalendarEventsReminderDatabase
 import com.mymeetings.android.db.repositories.RoomCalendarEventsDataRepository
 import com.mymeetings.android.debug.ConsoleLog
-import com.mymeetings.android.model.strategies.GoogleCalendarFetchStrategy
-import com.mymeetings.android.model.strategies.LocalCalendarFetchStrategy
 import com.mymeetings.android.model.managers.CalendarEventAlertManager
 import com.mymeetings.android.model.managers.CalendarEventsSyncManager
+import com.mymeetings.android.model.strategies.GoogleCalendarFetchStrategy
+import com.mymeetings.android.model.strategies.LocalCalendarFetchStrategy
 import com.mymeetings.android.utils.ClockUtils
 import com.mymeetings.android.view.viewModels.CalendarEventsViewModel
 import com.mymeetings.android.view.widgets.CalendarEventWidgetRemoteViewFactory
@@ -43,9 +43,7 @@ class InjectionsProvider(private val context: Context) {
         single {
             CalendarEventsSyncManager(
                 get<RoomCalendarEventsDataRepository>(),
-                listOf(
-                    get<LocalCalendarFetchStrategy>()
-                ),
+                get<LocalCalendarFetchStrategy>(),
                 get()
             )
         }

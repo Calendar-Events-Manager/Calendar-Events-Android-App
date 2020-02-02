@@ -40,7 +40,7 @@ class CalendarEventsSyncManagerTest {
 
         calendarEventsSyncManager = CalendarEventsSyncManager(
             calendarEventsRepository,
-            listOf(calendarFetchStrategy),
+            calendarFetchStrategy,
             clockUtils
         )
     }
