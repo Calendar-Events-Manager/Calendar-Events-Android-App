@@ -1,6 +1,4 @@
-package com.mymeetings.android.view.uiModels
-
-import com.mymeetings.android.ViewAlertType
+package com.mymeetings.android.model
 
 data class CalendarEventAlertUIModel(
     val id : Long?,

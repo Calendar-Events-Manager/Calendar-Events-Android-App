@@ -7,7 +7,7 @@ import com.mymeetings.android.model.CalendarEvent
 import com.mymeetings.android.managers.CalendarEventAlertManager
 import com.mymeetings.android.managers.CalendarEventsSyncManager
 import com.mymeetings.android.utils.ClockUtils
-import com.mymeetings.android.view.uiModels.CalendarEventAlertUIModel
+import com.mymeetings.android.model.CalendarEventAlertUIModel
 import kotlinx.coroutines.*
 
 class CalendarEventsViewModel(

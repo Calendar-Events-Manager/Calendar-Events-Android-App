@@ -10,7 +10,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.lifecycle.Observer
 import com.mymeetings.android.R
-import com.mymeetings.android.view.uiModels.CalendarEventAlertUIModel
+import com.mymeetings.android.model.CalendarEventAlertUIModel
 import com.mymeetings.android.view.viewModels.CalendarEventsViewModel
 import org.koin.android.ext.android.get
 
