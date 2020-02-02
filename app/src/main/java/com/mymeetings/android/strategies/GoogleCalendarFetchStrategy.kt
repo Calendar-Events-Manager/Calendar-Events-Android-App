@@ -1,8 +1,9 @@
-package com.mymeetings.android.model.strategies
+package com.mymeetings.android.strategies
 
 import com.mymeetings.android.model.CalendarEvent
 
-class GoogleCalendarFetchStrategy : CalendarFetchStrategy {
+class GoogleCalendarFetchStrategy :
+    CalendarFetchStrategy {
 
     override suspend fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long): List<CalendarEvent> {
         if(isAuthorized()) {
@@ -20,5 +21,6 @@ class GoogleCalendarFetchStrategy : CalendarFetchStrategy {
         status(false)
     }
 
-    override fun getCalendarFetchStrategyType() = CalendarFetchStrategyType.GOOGLE_CALENDAR
+    override fun getCalendarFetchStrategyType() =
+        CalendarFetchStrategyType.GOOGLE_CALENDAR
 }

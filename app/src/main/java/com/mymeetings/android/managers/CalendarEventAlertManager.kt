@@ -1,4 +1,4 @@
-package com.mymeetings.android.model.managers
+package com.mymeetings.android.managers
 
 import com.mymeetings.android.model.*
 import java.util.concurrent.TimeUnit

@@ -1,9 +1,9 @@
-package com.mymeetings.android.model.managers
+package com.mymeetings.android.managers
 
 import androidx.lifecycle.MutableLiveData
 import com.mymeetings.android.db.repositories.CalendarEventsRepository
 import com.mymeetings.android.model.CalendarEvent
-import com.mymeetings.android.model.strategies.CalendarFetchStrategy
+import com.mymeetings.android.strategies.CalendarFetchStrategy
 import com.mymeetings.android.utils.ClockUtils
 import java.util.concurrent.TimeUnit
 

@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.mymeetings.android.model.CalendarEvent
-import com.mymeetings.android.model.managers.CalendarEventAlertManager
-import com.mymeetings.android.model.managers.CalendarEventsSyncManager
+import com.mymeetings.android.managers.CalendarEventAlertManager
+import com.mymeetings.android.managers.CalendarEventsSyncManager
 import com.mymeetings.android.utils.ClockUtils
 import com.mymeetings.android.view.uiModels.CalendarEventAlertUIModel
 import kotlinx.coroutines.*

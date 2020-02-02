@@ -3,8 +3,8 @@ package com.mymeetings.android.services
 import android.content.Context
 import android.content.Intent
 import com.mymeetings.android.debug.ConsoleLog
-import com.mymeetings.android.model.managers.CalendarEventsSyncManager
-import com.mymeetings.android.model.strategies.CalendarFetchStrategyType
+import com.mymeetings.android.managers.CalendarEventsSyncManager
+import com.mymeetings.android.strategies.CalendarFetchStrategyType
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK

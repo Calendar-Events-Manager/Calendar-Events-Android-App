@@ -1,6 +1,6 @@
 package com.mymeetings.android.view.uiModels
 
-import com.mymeetings.android.model.strategies.ViewAlertType
+import com.mymeetings.android.ViewAlertType
 
 data class CalendarEventAlertUIModel(
     val id : Long?,

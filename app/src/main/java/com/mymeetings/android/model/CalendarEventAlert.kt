@@ -1,6 +1,6 @@
 package com.mymeetings.android.model
 
-import com.mymeetings.android.model.strategies.ViewAlertType
+import com.mymeetings.android.ViewAlertType
 
 data class CalendarEventAlert(
     val startTime: Long,

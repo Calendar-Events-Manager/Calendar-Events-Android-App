@@ -3,9 +3,10 @@ package com.mymeetings.android.model.managers
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.mymeetings.android.db.repositories.CalendarEventsRepository
+import com.mymeetings.android.managers.CalendarEventsSyncManager
 import com.mymeetings.android.model.CalendarEvent
-import com.mymeetings.android.model.strategies.CalendarFetchStrategy
-import com.mymeetings.android.model.strategies.CalendarFetchStrategyType
+import com.mymeetings.android.strategies.CalendarFetchStrategy
+import com.mymeetings.android.strategies.CalendarFetchStrategyType
 import com.mymeetings.android.utils.ClockUtils
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -38,11 +39,12 @@ class CalendarEventsSyncManagerTest {
     fun setup() {
         MockKAnnotations.init(this)
 
-        calendarEventsSyncManager = CalendarEventsSyncManager(
-            calendarEventsRepository,
-            calendarFetchStrategy,
-            clockUtils
-        )
+        calendarEventsSyncManager =
+            CalendarEventsSyncManager(
+                calendarEventsRepository,
+                calendarFetchStrategy,
+                clockUtils
+            )
     }
 
     @Test

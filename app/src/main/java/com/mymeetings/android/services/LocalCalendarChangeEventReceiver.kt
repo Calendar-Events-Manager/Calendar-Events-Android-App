@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.mymeetings.android.debug.ConsoleLog
-import com.mymeetings.android.model.managers.CalendarEventsSyncManager
+import com.mymeetings.android.managers.CalendarEventsSyncManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

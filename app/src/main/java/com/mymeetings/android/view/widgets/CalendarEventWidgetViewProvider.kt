@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
 import com.mymeetings.android.R
-import com.mymeetings.android.model.strategies.ViewAlertType
+import com.mymeetings.android.ViewAlertType
 import com.mymeetings.android.view.uiModels.CalendarEventAlertUIModel
 
 class CalendarEventWidgetViewProvider(
