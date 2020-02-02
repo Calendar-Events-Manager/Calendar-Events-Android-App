@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.mymeetings.android.debug.ConsoleLog
 import com.mymeetings.android.managers.CalendarEventsSyncManager
-import com.mymeetings.android.strategies.CalendarFetchStrategyType
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
@@ -42,14 +41,12 @@ class LocalCalendarChangeEventReceiverTest : KoinTest {
     }
 
     @Test
-    fun onReceiveShouldCallCalendarEventSyncManagerToFetchLocalCalendarEvents() {
+    fun onReceiveShouldCallCalendarEventSyncManagerToFetchLocalCalendarEvents() = runBlocking {
 
-        runBlocking {
-            LocalCalendarChangeEventReceiver().onReceive(context, Intent())
-        }
+        LocalCalendarChangeEventReceiver().onReceive(context, Intent())
 
         coVerify {
-            calendarEventsSyncManager.syncCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
+            calendarEventsSyncManager.syncCalendarEvents()
         }
     }
 }
