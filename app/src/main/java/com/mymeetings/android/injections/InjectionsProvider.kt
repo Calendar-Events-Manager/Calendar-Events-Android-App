@@ -10,6 +10,8 @@ import com.mymeetings.android.strategies.GoogleCalendarFetchStrategy
 import com.mymeetings.android.strategies.LocalCalendarFetchStrategy
 import com.mymeetings.android.utils.ClockUtils
 import com.mymeetings.android.utils.WidgetUtils
+import com.mymeetings.android.view.activities.ui.dashboard.DashboardViewModel
+import com.mymeetings.android.view.activities.ui.notifications.NotificationsViewModel
 import com.mymeetings.android.view.viewModels.CalendarEventsViewModel
 import com.mymeetings.android.view.widgets.CalendarEventWidgetRemoteViewFactory
 import org.koin.android.viewmodel.ext.koin.viewModel
@@ -51,6 +53,8 @@ class InjectionsProvider(private val context: Context) {
         }
 
         viewModel { CalendarEventsViewModel(get(), get<RoomCalendarEventsDataRepository>()) }
+        viewModel { DashboardViewModel() }
+        viewModel { NotificationsViewModel() }
 
         factory { CalendarEventWidgetRemoteViewFactory(context, get(), get()) }
     }

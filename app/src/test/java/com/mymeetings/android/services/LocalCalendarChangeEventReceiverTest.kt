@@ -6,7 +6,6 @@ import com.mymeetings.android.debug.ConsoleLog
 import com.mymeetings.android.managers.CalendarEventsSyncManager
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
-import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -17,10 +16,12 @@ import org.koin.test.KoinTest
 
 class LocalCalendarChangeEventReceiverTest : KoinTest {
 
+    private lateinit var localCalendarChangeEventReceiver: LocalCalendarChangeEventReceiver
+
     @RelaxedMockK
     lateinit var calendarEventsSyncManager: CalendarEventsSyncManager
 
-    @MockK
+    @RelaxedMockK
     lateinit var context: Context
 
     @RelaxedMockK
@@ -38,12 +39,14 @@ class LocalCalendarChangeEventReceiverTest : KoinTest {
                 consoleLog
             }
         })
+
+        localCalendarChangeEventReceiver = LocalCalendarChangeEventReceiver()
     }
 
     @Test
     fun onReceiveShouldCallCalendarEventSyncManagerToFetchLocalCalendarEvents() = runBlocking {
 
-        LocalCalendarChangeEventReceiver().onReceive(context, Intent())
+        localCalendarChangeEventReceiver.onReceive(context, Intent())
 
         coVerify {
             calendarEventsSyncManager.syncCalendarEvents()
