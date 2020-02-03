@@ -5,11 +5,12 @@ import com.mymeetings.android.BuildConfig
 import com.mymeetings.android.db.CalendarEventsReminderDatabase
 import com.mymeetings.android.db.repositories.RoomCalendarEventsDataRepository
 import com.mymeetings.android.debug.ConsoleLog
-import com.mymeetings.android.managers.CalendarEventAlertManager
+import com.mymeetings.android.model.CalendarEventsConfigurations
 import com.mymeetings.android.managers.CalendarEventsSyncManager
 import com.mymeetings.android.strategies.GoogleCalendarFetchStrategy
 import com.mymeetings.android.strategies.LocalCalendarFetchStrategy
 import com.mymeetings.android.utils.ClockUtils
+import com.mymeetings.android.utils.WidgetUtils
 import com.mymeetings.android.view.viewModels.CalendarEventsViewModel
 import com.mymeetings.android.view.widgets.CalendarEventWidgetRemoteViewFactory
 import org.koin.android.viewmodel.ext.koin.viewModel
@@ -27,9 +28,7 @@ class InjectionsProvider(private val context: Context) {
 
         single { ClockUtils() }
 
-        single {
-            CalendarEventAlertManager()
-        }
+        single { WidgetUtils(context) }
 
         single { GoogleCalendarFetchStrategy() }
 
@@ -38,7 +37,6 @@ class InjectionsProvider(private val context: Context) {
                 context
             )
         }
-
         single {
             //Enabling log only for debug builds.
             ConsoleLog(BuildConfig.DEBUG)
@@ -48,12 +46,13 @@ class InjectionsProvider(private val context: Context) {
             CalendarEventsSyncManager(
                 get<RoomCalendarEventsDataRepository>(),
                 get<LocalCalendarFetchStrategy>(),
+                get(),
                 get()
             )
         }
 
-        viewModel { CalendarEventsViewModel(get(), get(), get()) }
+        viewModel { CalendarEventsViewModel(get(), get<RoomCalendarEventsDataRepository>()) }
 
-        factory { CalendarEventWidgetRemoteViewFactory(context, get()) }
+        factory { CalendarEventWidgetRemoteViewFactory(context, get(), get()) }
     }
 }

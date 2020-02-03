@@ -6,9 +6,11 @@ import android.widget.RemoteViews
 import com.mymeetings.android.R
 import com.mymeetings.android.model.ViewAlertType
 import com.mymeetings.android.model.CalendarEventAlertUIModel
+import com.mymeetings.android.utils.ClockUtils
 
 class CalendarEventWidgetViewProvider(
-    private val context: Context
+    private val context: Context,
+    private val clockUtils: ClockUtils
 ) {
 
     private val calendarEventViewAlerts = mutableListOf<CalendarEventAlertUIModel>()
@@ -22,7 +24,8 @@ class CalendarEventWidgetViewProvider(
 
     fun getView(position: Int) = RemoteViews(context.packageName, R.layout.item_meeting).apply {
         val calendarEventViewAlert = calendarEventViewAlerts[position]
-        if (calendarEventViewAlert.viewAlertType == ViewAlertType.RUNNING) {
+        val currentTimeMillis = clockUtils.currentTimeMillis()
+        if (calendarEventViewAlert.getViewAlertType(currentTimeMillis) == ViewAlertType.RUNNING) {
             setTextViewText(R.id.runningTitleText, calendarEventViewAlert.title)
             setTextViewText(R.id.runningTimeText, calendarEventViewAlert.eventTimeLine)
             setViewVisibility(R.id.upcomingLayout, View.GONE)
@@ -34,7 +37,7 @@ class CalendarEventWidgetViewProvider(
             setViewVisibility(R.id.upcomingLayout, View.VISIBLE)
             setViewVisibility(R.id.runningLayout, View.GONE)
 
-            val colorResId = when (calendarEventViewAlert.viewAlertType) {
+            val colorResId = when (calendarEventViewAlert.getViewAlertType(currentTimeMillis)) {
                 ViewAlertType.PRIORITY -> {
                     android.R.color.holo_red_light
                 }
