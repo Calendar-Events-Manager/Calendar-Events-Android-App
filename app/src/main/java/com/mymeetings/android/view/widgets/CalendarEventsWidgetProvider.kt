@@ -1,6 +1,5 @@
 package com.mymeetings.android.view.widgets
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -8,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
 import com.mymeetings.android.R
-import com.mymeetings.android.view.activities.MainActivity
 
 class CalendarEventsWidgetProvider : AppWidgetProvider() {
 
@@ -21,12 +19,7 @@ class CalendarEventsWidgetProvider : AppWidgetProvider() {
 
         context?.let { ctx ->
             appWidgetIds?.forEach { id ->
-                val pendingIntent: PendingIntent = Intent(context, MainActivity::class.java)
-                    .let { intent ->
-                        PendingIntent.getActivity(context, 0, intent, 0)
-                    }
-
-                val intent : Intent = Intent(context, CalendarEventWidgetService::class.java).apply {
+                val intent: Intent = Intent(context, CalendarEventWidgetService::class.java).apply {
                     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
                     data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
                 }

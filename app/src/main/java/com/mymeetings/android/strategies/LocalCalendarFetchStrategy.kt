@@ -1,4 +1,4 @@
-package com.mymeetings.android.model.strategies
+package com.mymeetings.android.strategies
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -9,7 +9,8 @@ import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
 import com.mymeetings.android.model.CalendarEvent
 
-class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchStrategy {
+class LocalCalendarFetchStrategy(private val context: Context) :
+    CalendarFetchStrategy {
 
     @SuppressLint("MissingPermission")
     override suspend fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long): List<CalendarEvent> {
@@ -49,7 +50,7 @@ class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchSt
 
             val meetings = mutableListOf<CalendarEvent>()
             while (eventCur?.moveToNext() == true) {
-                val title = eventCur.getString(1)
+                val title = eventCur.getString(1)?:""
                 val startTime = eventCur.getLong(2)
                 val endTime = eventCur.getLong(3)
 
@@ -83,6 +84,7 @@ class LocalCalendarFetchStrategy(private val context: Context) : CalendarFetchSt
         }
     }
 
-    override fun getCalendarFetchStrategyType() = CalendarFetchStrategyType.LOCAL_CALENDAR
+    override fun getCalendarFetchStrategyType() =
+        CalendarFetchStrategyType.LOCAL_CALENDAR
 
 }

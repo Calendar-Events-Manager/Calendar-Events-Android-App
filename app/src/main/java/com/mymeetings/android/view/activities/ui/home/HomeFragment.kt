@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.mymeetings.android.R
+import com.mymeetings.android.view.viewModels.CalendarEventsViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class HomeFragment : Fragment() {

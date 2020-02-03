@@ -1,4 +1,4 @@
-package com.mymeetings.android.model.strategies
+package com.mymeetings.android.model
 
 enum class ViewAlertType {
     RUNNING,

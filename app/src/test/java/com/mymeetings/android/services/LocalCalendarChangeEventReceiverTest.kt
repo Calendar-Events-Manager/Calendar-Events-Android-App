@@ -3,12 +3,11 @@ package com.mymeetings.android.services
 import android.content.Context
 import android.content.Intent
 import com.mymeetings.android.debug.ConsoleLog
-import com.mymeetings.android.model.managers.CalendarEventsSyncManager
-import com.mymeetings.android.model.strategies.CalendarFetchStrategyType
+import com.mymeetings.android.managers.CalendarEventsSyncManager
 import io.mockk.MockKAnnotations
-import io.mockk.impl.annotations.MockK
+import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.koin.dsl.module.module
@@ -17,10 +16,12 @@ import org.koin.test.KoinTest
 
 class LocalCalendarChangeEventReceiverTest : KoinTest {
 
+    private lateinit var localCalendarChangeEventReceiver: LocalCalendarChangeEventReceiver
+
     @RelaxedMockK
     lateinit var calendarEventsSyncManager: CalendarEventsSyncManager
 
-    @MockK
+    @RelaxedMockK
     lateinit var context: Context
 
     @RelaxedMockK
@@ -38,17 +39,17 @@ class LocalCalendarChangeEventReceiverTest : KoinTest {
                 consoleLog
             }
         })
+
+        localCalendarChangeEventReceiver = LocalCalendarChangeEventReceiver()
     }
 
     @Test
-    fun onReceiveShouldCallCalendarEventSyncManagerToFetchLocalCalendarEvents() {
+    fun onReceiveShouldCallCalendarEventSyncManagerToFetchLocalCalendarEvents() = runBlocking {
 
-        val intent = Intent()
+        localCalendarChangeEventReceiver.onReceive(context, Intent())
 
-        LocalCalendarChangeEventReceiver().onReceive(context, intent)
-
-        verify {
-            calendarEventsSyncManager.fetchCalendarEvents(listOf(CalendarFetchStrategyType.LOCAL_CALENDAR))
+        coVerify {
+            calendarEventsSyncManager.syncCalendarEvents()
         }
     }
 }

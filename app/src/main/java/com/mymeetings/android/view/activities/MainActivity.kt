@@ -8,7 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mymeetings.android.R
-import com.mymeetings.android.view.activities.ui.home.CalendarEventsViewModel
+import com.mymeetings.android.view.viewModels.CalendarEventsViewModel
 import org.koin.android.viewmodel.ext.android.getViewModel
 
 class MainActivity : AppCompatActivity() {
