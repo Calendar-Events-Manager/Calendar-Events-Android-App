@@ -8,6 +8,7 @@ import com.mymeetings.android.model.CalendarEvent
 import com.mymeetings.android.strategies.CalendarFetchStrategy
 import com.mymeetings.android.strategies.CalendarFetchStrategyType
 import com.mymeetings.android.utils.ClockUtils
+import com.mymeetings.android.utils.WidgetUtils
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
@@ -27,11 +28,14 @@ class CalendarEventsSyncManagerTest {
     @RelaxedMockK
     private lateinit var calendarEventsRepository: CalendarEventsRepository
 
-    @MockK
+    @RelaxedMockK
     private lateinit var clockUtils: ClockUtils
 
     @RelaxedMockK
     private lateinit var calendarFetchStrategy: CalendarFetchStrategy
+
+    @RelaxedMockK
+    private lateinit var widgetUtils: WidgetUtils
 
     private lateinit var calendarEventsSyncManager: CalendarEventsSyncManager
 
@@ -43,7 +47,8 @@ class CalendarEventsSyncManagerTest {
             CalendarEventsSyncManager(
                 calendarEventsRepository,
                 calendarFetchStrategy,
-                clockUtils
+                clockUtils,
+                widgetUtils
             )
     }
 

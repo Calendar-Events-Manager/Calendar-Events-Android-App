@@ -5,7 +5,6 @@ import com.mymeetings.android.BuildConfig
 import com.mymeetings.android.db.CalendarEventsReminderDatabase
 import com.mymeetings.android.db.repositories.RoomCalendarEventsDataRepository
 import com.mymeetings.android.debug.ConsoleLog
-import com.mymeetings.android.model.CalendarEventsConfigurations
 import com.mymeetings.android.managers.CalendarEventsSyncManager
 import com.mymeetings.android.strategies.GoogleCalendarFetchStrategy
 import com.mymeetings.android.strategies.LocalCalendarFetchStrategy
