@@ -12,4 +12,4 @@ jobs:
         java-version: 1.8
     - uses: eskatos/gradle-command-action@v1
       with:
-        arguments: build
+        arguments: clean test
