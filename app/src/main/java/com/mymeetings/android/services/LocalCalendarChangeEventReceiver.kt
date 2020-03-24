@@ -8,6 +8,7 @@ import com.mymeetings.android.managers.CalendarEventsSyncManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.get
 
@@ -19,7 +20,7 @@ class LocalCalendarChangeEventReceiver
 
     override fun onReceive(context: Context?, intent: Intent?) {
         consoleLog.i(tag = "LocalCalendarChangeEventReceiver", message = "onReceive called")
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             calendarEventsSyncManager.syncCalendarEvents()
         }
     }

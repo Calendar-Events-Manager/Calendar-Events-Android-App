@@ -13,7 +13,7 @@ class LocalCalendarFetchStrategy(private val context: Context) :
     CalendarFetchStrategy {
 
     @SuppressLint("MissingPermission")
-    override suspend fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long): List<CalendarEvent> {
+    override fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long): List<CalendarEvent> {
 
         if(isAuthorized()) {
             val calCur: Cursor? =

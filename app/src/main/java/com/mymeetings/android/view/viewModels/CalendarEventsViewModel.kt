@@ -20,7 +20,7 @@ class CalendarEventsViewModel(
         calendarEventsRepository.getRelevantCalendarEvents()
 
     fun syncEvents() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             calendarEventsSyncManager.syncCalendarEvents()
         }
     }

@@ -4,7 +4,7 @@ import com.mymeetings.android.model.CalendarEvent
 
 interface CalendarFetchStrategy {
 
-    suspend fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long) : List<CalendarEvent>
+    fun fetchCalendarEvents(fetchFrom : Long, fetchUpTo : Long) : List<CalendarEvent>
 
     fun isAuthorized() : Boolean
 

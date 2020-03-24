@@ -6,6 +6,8 @@ import com.mymeetings.android.model.CalendarEvent
 import com.mymeetings.android.strategies.CalendarFetchStrategy
 import com.mymeetings.android.utils.ClockUtils
 import com.mymeetings.android.utils.WidgetUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
 class CalendarEventsSyncManager(
@@ -21,7 +23,7 @@ class CalendarEventsSyncManager(
         calendarEventsLiveData.postValue(calendarEventsRepository.getRelevantCalendarEvents())
     }
 
-    suspend fun syncCalendarEvents() {
+    suspend fun syncCalendarEvents() = withContext(Dispatchers.IO) {
         val fetchUpTo = clockUtils.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)
         val fetchFrom = clockUtils.currentTimeMillis()
         calendarEventsRepository.clearCalendarEvents()
