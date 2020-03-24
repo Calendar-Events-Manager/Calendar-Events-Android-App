@@ -1,9 +1,6 @@
 name: Build App
 
-on:
-  push:
-  watch:
-    types: [started]
+on: [push, watch]
 
 jobs:
   build:
