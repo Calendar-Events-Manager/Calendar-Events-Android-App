@@ -1,9 +1,13 @@
 name: Build App
 
-on: [push]
+on:
+  push:
+  watch:
+    types: [started]
 
 jobs:
   build:
+    if: github.actor == github.event.repository.owner.login
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
