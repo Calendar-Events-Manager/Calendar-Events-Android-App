@@ -1,6 +1,6 @@
 name: Build App
 
-on: [push, watch]
+on: [push]
 
 jobs:
   build:

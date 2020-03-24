@@ -7,11 +7,8 @@ import com.mymeetings.android.managers.CalendarEventsSyncManager
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
 import org.koin.dsl.module.module
@@ -20,7 +17,6 @@ import org.koin.test.KoinTest
 
 @ExperimentalCoroutinesApi
 class LocalCalendarChangeEventReceiverTest : KoinTest {
-    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
     private lateinit var localCalendarChangeEventReceiver: LocalCalendarChangeEventReceiver
 
@@ -35,7 +31,6 @@ class LocalCalendarChangeEventReceiverTest : KoinTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(mainThreadSurrogate)
         MockKAnnotations.init(this)
 
         loadKoinModules(module {
